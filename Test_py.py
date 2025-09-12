@@ -47,6 +47,8 @@ class Humanoid():
     def Rect(self):
         self.rect = pygame.Rect(self.pos[0],self.pos[1],self.len[0],self.len[1])
         return self.rect
+    def Name(self):
+        return self.name
 
 Human1 = Humanoid(500,500,80,80,300,"Humain","Bob")
 Zombie1 = Humanoid(500,500,80,80,300,"Zombie","Zomb1")
@@ -73,6 +75,7 @@ while running:
     if clicked and mouse_click == (False,False,False):
         clicked = False
     for zombie in Zombie_liste:
+        print(Humanoid.Name(zombie))
         pygame.draw.rect(screen,"red",Humanoid.Rect(zombie),0,10)
     
     pygame.display.flip()
