@@ -1,7 +1,9 @@
 import pygame
+import os
 import time
 import Items as I
 import Humanoid as H
+import Walls as W
 import json
 import random
 import math
@@ -13,20 +15,36 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-class Walls():
-    def __init__(self,x,y,l,L):
-        self.x = x
-        self.y = y
-        self.rect = pygame.Rect(x,y,l,L)
-    def rect(self):
-        return self.rect
-Wall1 = Walls(S_WIDTH - 180, 20,160,60)
+main_dir = os.path.split(os.path.abspath(__file__))[0]
+img_dir = os.path.join(main_dir,"Image")
+print(img_dir)
+
+class Imagee():
+    def __init__(self,name):
+        self.img = pygame.image.load(os.path.join(img_dir, name)).convert_alpha()
+        self.rect = self.img.get_rect()
+        self.rotaton = 0
+    def rotate(self,rotation):
+        self.rotation = rotation
+        self.rect = self.img.get_rect()
+    def draw_self(self,pos):
+        real_pos = pos[0] - self.rect[2] / 2, pos[1] - self.rect[3] / 2
+        screen.blit(self.img,real_pos)
+    def print_rect(self):
+        print(self.rect)
+
+    
+
+Img_Humain = Imagee("Player.png")
+Wall1 = W.Walls(S_WIDTH - 180, 20,160,60)
 Wall_liste = [Wall1]
+
 
 with open("Items.json","r") as f:
     Items = json.loads(f.read())
 print(Items)
-Human1 = H.Humanoid(500,500,80,80,300,"Humain","Bob",pygame.image.load(r"C:\\Users\\gunnarsson1\\Documents\\GitHub\\2025_2026_Ter_04_grp_67\\Image\\Player.png"))
+
+Human1 = H.Humanoid(500,500,80,80,300,"Humain","Bob",pygame.image.load(os.path.join(img_dir,'Player.png')))
 Zombie1 = H.Humanoid(500,500,80,80,300,"Zombie","Zomb1",None)
 Zombie_liste = [Zombie1] 
 
@@ -51,9 +69,9 @@ while running:
     
 
     Human1.moove(keys,dt)
-    screen.blit(screen,Human1.pos,Human1.Rect())
+    Img_Humain.draw_self(Human1.pos)
     for obj in Wall_liste:
-        pygame.draw.rect(screen,"white",Walls.rect(Wall1))
+        pygame.draw.rect(screen,"white",W.Walls.rect(Wall1))
     for zombie in Zombie_liste:
         pygame.draw.rect(screen,"red",zombie.Rect(),0,10)
     
@@ -64,7 +82,7 @@ while running:
         clicked = False
     if keys[pygame.K_r]:
         Deagle.reload()
-    Deagle.print()
+    Img_Humain.print_rect()
     Deagle.update()
     pygame.display.flip()
     dt = clock.tick(60) / 1000
