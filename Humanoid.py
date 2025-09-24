@@ -1,10 +1,8 @@
 import pygame
 class Humanoid():
-    def __init__(self,x,y,l,L,speed,type,name,image):
+    def __init__(self,x,y,speed,type,name,image):
         self.pos = pygame.math.Vector2(x,y)
-        self.len = (l,L)
         self.vect = pygame.math.Vector2(0,0)
-        self.rect = pygame.Rect(x,y,l,L)
         self.type = type
         self.name = name
         self.speed = speed
@@ -21,8 +19,9 @@ class Humanoid():
             self.vect[0] += self.speed * dt
         if self.vect.length() > 1:
             self.vect = self.vect.normalize()
-        self.pos += self.vect * max_sp
+        self.pos += self.vect * max_sp * 16
         self.vect = pygame.math.Vector2(0,0)
+        print(self.pos)
     def Rect(self):
         self.rect = pygame.Rect(self.pos[0],self.pos[1],self.len[0],self.len[1])
         return self.rect

@@ -14,6 +14,9 @@ screen = pygame.display.set_mode((S_WIDTH,S_HEIGHT))
 clock = pygame.time.Clock()
 running = True
 dt = 0
+CONVERSION_CARRE_PIXEL = 1/16
+CONVERSION_PIXEL_CARRE = 16
+
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 img_dir = os.path.join(main_dir,"Image")
@@ -28,10 +31,7 @@ class Imagee():
         # self.rotation = 0  et  https://stackoverflow.com/questions/4183208/how-do-i-rotate-an-image-around-its-center-using-pygame
     def draw_self(self,pos):
         real_pos = pos[0] - self.rect[2] / 2, pos[1] - self.rect[3] / 2
-        print(pos)
         screen.blit(self.img,real_pos)
-    def print_rect(self):
-        print(self.rect)
 
 
 Img_Humain = Imagee("Player.png")
@@ -43,8 +43,8 @@ with open("Items.json","r") as f:
     Items = json.loads(f.read())
 print(Items)
 
-Human1 = H.Humanoid(S_WIDTH/2,S_HEIGHT/2,80,80,300,"Humain","Bob",Img_Humain)
-Zombie1 = H.Humanoid(500,500,80,80,300,"Zombie","Zomb1",None)
+Human1 = H.Humanoid(0,0,3,"Humain","Bob",Img_Humain)
+Zombie1 = H.Humanoid(10,10,3,"Zombie","Zomb1",None)
 Zombie_liste = [Zombie1] 
 
 
@@ -72,7 +72,7 @@ while running:
     #     pygame.draw.rect(screen,"red",zombie.Rect(),0,10)
     
     Human1.moove(keys,dt)
-    Img_Humain.draw_self(Human1.pos)
+    Img_Humain.draw_self((S_WIDTH/2,S_HEIGHT/2))
     if mouse_click == (True,False,False) and not clicked:
         Deagle.shoot()
         clicked = True
