@@ -1,9 +1,9 @@
 import pygame
 import os
 import time
-import Items as I
-import Humanoid as H
-import Walls as W
+import C_Items as I
+import C_Humanoid as H
+import C_Walls as W
 import json
 import random
 import math
@@ -14,8 +14,8 @@ screen = pygame.display.set_mode((S_WIDTH,S_HEIGHT))
 clock = pygame.time.Clock()
 running = True
 dt = 0
-CONVERSION_CARRE_PIXEL = 1/16
-CONVERSION_PIXEL_CARRE = 16
+CONVERSION_CARRE_PIXEL = 16
+CONVERSION_PIXEL_CARRE = 1/16
 
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
@@ -28,7 +28,6 @@ class Imagee():
         self.real_img = pygame.transform.scale(self.real_img,(64,64))
         self.img = self.real_img
         self.rect = self.img.get_rect()
-        # self.rotation = 0  et  https://stackoverflow.com/questions/4183208/how-do-i-rotate-an-image-around-its-center-using-pygame
     def draw_self(self,pos):
         real_pos = pos[0] - self.rect[2] / 2, pos[1] - self.rect[3] / 2
         screen.blit(self.img,real_pos)
@@ -47,12 +46,43 @@ Zombie_liste = [Zombie1]
 with open("Items.json","r") as f:
     Items = json.loads(f.read())
 print(Items)
-Deagle = I.Weapon("pistolet",10,7,100)
-Pompe = I.Weapon("pistolet",25,6,10)
+Deagle = I.Weapon(10,7,100)
+Pompe = I.Weapon(25,6,10)
 # name = "Zombie" + str(len(Zombie_liste) + 1)
 # Zombie_liste.append(H.Humanoid(random.randint(0,S_WIDTH),random.randint(0,S_HEIGHT),80,80,300,"Zombie", name))
 # if pygame.Rect.collidepoint(Walls.rect(Wall1),mouse_pos[0],mouse_pos[1]) and mouse_click == (True,False,False) and not clicked:
 #     clicked = True
+
+Chunk1= [[0,0,1,0,0],
+         [0,0,1,0,0],
+         [0,0,1,0,0],
+         [0,1,1,1,0]]
+
+class tile():
+    def __init__(self):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 clicked = False
 while running:
@@ -70,8 +100,15 @@ while running:
     # for zombie in Zombie_liste:
     #     pygame.draw.rect(screen,"red",zombie.Rect(),0,10)
     
+
+    for i in range(len(Chunk1)):
+        for b in range(len(Chunk1[i])):
+            if Chunk1[i][b] == 0:
+                pygame.draw.rect(screen,"green",(i*16,b*16,16,16))
+            else:
+                pygame.draw.rect(screen,"blue",(i*16,b*16,16,16))
     Human1.moove(keys,dt)
-    Img_Humain.draw_self((S_WIDTH/2,S_HEIGHT/2))
+    # Img_Humain.draw_self((S_WIDTH/2,S_HEIGHT/2))
     if mouse_click == (True,False,False) and not clicked:
         Deagle.shoot()
         clicked = True
@@ -83,6 +120,5 @@ while running:
     Deagle.update()
     pygame.display.flip()
     dt = clock.tick(60) / 1000
-    # print(dt)
 
 pygame.quit()

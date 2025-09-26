@@ -10,8 +10,7 @@ class Item():
         print(self.name,self.type,self.lore)
 
 class Weapon():
-    def __init__(self,type,damage,chargeur,range):
-        self.type = type
+    def __init__(self,damage,chargeur,range):
         self.damage = damage
         self.balle_actu = chargeur
         self.chargeur = chargeur
@@ -33,3 +32,7 @@ class Weapon():
             self.balle_actu = self.chargeur
     def print(self):
         print(self.balle_actu)
+
+class pistolet(Weapon):
+    def __init__(self, damage, chargeur, range):
+        super().__init__(damage, chargeur, range)
