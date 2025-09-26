@@ -39,15 +39,14 @@ Wall1 = W.Walls(S_WIDTH - 180, 20,160,60)
 Wall_liste = [Wall1]
 
 
+
+Human1 = H.Humain(0,0,3,"Humain","Bob",Img_Humain)
+Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None)
+Zombie_liste = [Zombie1] 
+
 with open("Items.json","r") as f:
     Items = json.loads(f.read())
 print(Items)
-
-Human1 = H.Humanoid(0,0,3,"Humain","Bob",Img_Humain)
-Zombie1 = H.Humanoid(10,10,3,"Zombie","Zomb1",None)
-Zombie_liste = [Zombie1] 
-
-
 Deagle = I.Weapon("pistolet",10,7,100)
 Pompe = I.Weapon("pistolet",25,6,10)
 # name = "Zombie" + str(len(Zombie_liste) + 1)

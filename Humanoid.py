@@ -8,7 +8,6 @@ class Humanoid():
         self.speed = speed
         self.image = image
     def moove(self,keys,dt):
-        max_sp = pygame.math.Vector2(self.speed * dt,0).length()
         if keys[pygame.K_z]:
             self.vect[1] -= self.speed * dt
         if keys[pygame.K_s]:
@@ -19,7 +18,7 @@ class Humanoid():
             self.vect[0] += self.speed * dt
         if self.vect.length() > 1:
             self.vect = self.vect.normalize()
-        self.pos += self.vect * max_sp * 16
+        self.pos += self.vect
         self.vect = pygame.math.Vector2(0,0)
         print(self.pos)
     def Rect(self):
@@ -27,3 +26,11 @@ class Humanoid():
         return self.rect
     def Name(self):
         return self.name
+    
+class Humain(Humanoid):
+    def __init__(self, x, y, speed, type, name, image):
+        super().__init__(x, y, speed, type, name, image)
+
+class Zombie(Humanoid):
+    def __init__(self, x, y, speed, type, name, image):
+        super().__init__(x, y, speed, type, name, image)
