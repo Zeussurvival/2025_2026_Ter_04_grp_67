@@ -5,6 +5,7 @@ import numpy as np
 import C_Items as I
 import C_Humanoid as H
 import C_Walls as W
+import C_Tiles as T
 import json
 import random
 import math
@@ -57,13 +58,10 @@ liste = []
 for i in range(20):
     liste.append(random.randint(0,1))
 Chunk1 = np.array([[0,0,1,0,0],
-         [0,0,1,0,0],
-         [0,0,1,0,0],
-         [0,1,1,1,0]])
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,1,1,1,0]])
 
-class tile():
-    def __init__(self):
-        pass
 
 
 
