@@ -41,7 +41,7 @@ Wall_liste = [Wall1]
 
 
 
-Human1 = H.Humain(0,0,3,"Humain","Bob",Img_Humain)
+Human1 = H.Humain(0,0,3,"Humain","Bob",Img_Humain.real_img)
 Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None)
 Zombie_liste = [Zombie1] 
 
@@ -54,14 +54,10 @@ Pompe = I.Weapon(25,6,10)
 # Zombie_liste.append(H.Humanoid(random.randint(0,S_WIDTH),random.randint(0,S_HEIGHT),80,80,300,"Zombie", name))
 # if pygame.Rect.collidepoint(Walls.rect(Wall1),mouse_pos[0],mouse_pos[1]) and mouse_click == (True,False,False) and not clicked:
 #     clicked = True
-liste = []
-for i in range(20):
-    liste.append(random.randint(0,1))
 Chunk1 = np.array([[0,0,1,0,0],
                 [0,0,1,0,0],
                 [0,0,1,0,0],
                 [0,1,1,1,0]])
-
 
 
 
@@ -111,7 +107,7 @@ while running:
 
     list_t0.append(t_last)
     Human1.moove(keys,dt)
-    # Img_Humain.draw_self((S_WIDTH/2,S_HEIGHT/2))
+    screen.blit(Human1.image,Human1.pos)
     if mouse_click == (True,False,False) and not clicked:
         Deagle.shoot()
         clicked = True
@@ -125,7 +121,3 @@ while running:
     dt = clock.tick(60) / 1000
 
 pygame.quit()
-n = 0
-for i in list_t0:
-    n += i
-print(n/len(list_t0))

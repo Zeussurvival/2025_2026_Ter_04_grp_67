@@ -21,11 +21,6 @@ class Humanoid():
         self.pos += self.vect
         self.vect = pygame.math.Vector2(0,0)
         print(self.pos)
-    def Rect(self):
-        self.rect = pygame.Rect(self.pos[0],self.pos[1],self.len[0],self.len[1])
-        return self.rect
-    def Name(self):
-        return self.name
     
 class Humain(Humanoid):
     def __init__(self, x, y, speed, type, name, image):
