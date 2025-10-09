@@ -1,5 +1,7 @@
 import numpy as np
+import pygame
 import random
+pygame.init()
 # liste0= []
 # liste_tot = []
 # for i in range(16):
@@ -24,3 +26,63 @@ import random
 # yellow = c[4,:]
 # blue = c[1::2,:3:2]
 # print(blue)
+
+
+# c = np.arange(25).reshape(5,5)
+# print(c)
+# for a in range(len(c)):
+#     for b in range(len(c[a])):
+#         print(c[a,b])
+
+
+Chunk1 = np.array([[0,0,1,0],
+                [0,0,1,0],
+                [0,0,1,0],
+                [0,1,1,1]])
+
+# print("AAAAAAAAAAAA")
+# for i in range(len(Chunk1)):
+#     for b in range(len(Chunk1[i])):
+#         print("AAA",i,b)
+#         if Chunk1[i,b] %2 == 0:
+#             # print("AAAAAAAAA",i,b)
+#             print(i*16,b*16)
+#             # screen.blit(list_loaded_tiles[0].image,(b*16,i*16))
+
+#         if Chunk1[i,b] %2 == 1:
+#             # print("BBBBBBBBBBBBBB",i,b)
+#             print(i*16,b*16)
+
+
+
+screen = pygame.display.set_mode((1280, 720))
+clock = pygame.time.Clock()
+running = True
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    screen.fill("purple")
+
+    print("AAAAAAAAAAAAA")
+    for i in range(len(Chunk1)):
+        for b in range(len(Chunk1[i])):
+            print("BBB",Chunk1[i])
+            print("AAA",i,b)
+            if Chunk1[i,b] == 0:
+                print(Chunk1[i,b])
+                # print("AAAAAAAAA",i,b)
+                print(i*16,b*16)
+                pygame.draw.rect(screen,"green",(b*16,i*16,16,16))
+
+            if Chunk1[i,b] == 1:
+                print("Non",Chunk1[i,b])
+                # print("BBBBBBBBBBBBBB",i,b)
+                print(i*16,b*16)
+                pygame.draw.rect(screen,"red",(b*16,i*16,16,16))
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()

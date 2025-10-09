@@ -7,8 +7,8 @@ import C_Humanoid as H
 import C_Walls as W
 import C_Tiles as T
 import json
-import random
-import math
+# import random
+# import math
 pygame.init()
 S_WIDTH,S_HEIGHT = 1280, 720
 
@@ -27,7 +27,7 @@ print(img_dir)
 class Imagee():
     def __init__(self,name):
         self.real_img = pygame.image.load(os.path.join(img_dir, name)).convert_alpha()
-        self.real_img = pygame.transform.scale(self.real_img,(64,64))
+        self.real_img = pygame.transform.scale(self.real_img,(16,16))
         self.img = self.real_img
         self.rect = self.img.get_rect()
     def draw_self(self,pos):
@@ -41,7 +41,7 @@ Wall_liste = [Wall1]
 
 
 
-Human1 = H.Humain(0,0,3,"Humain","Bob",Img_Humain.real_img)
+Human1 = H.Humain(0,0,30,"Humain","Bob",Img_Humain.real_img)
 Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None)
 Zombie_liste = [Zombie1] 
 
@@ -59,6 +59,7 @@ Chunk1 = np.array([[0,0,1,0,0],
                 [0,0,1,0,0],
                 [0,1,1,1,0]])
 
+list_loaded_tiles = [T.Grass(None,None,None,"Grass.png"),T.Road(None,None,None,"Road_01.png")]
 
 
 
@@ -78,8 +79,6 @@ Chunk1 = np.array([[0,0,1,0,0],
 
 
 
-
-list_t0 = []
 clicked = False
 while running:
     for event in pygame.event.get():
@@ -95,17 +94,17 @@ while running:
         pygame.draw.rect(screen,"white",W.Walls.rect(Wall1))
     # for zombie in Zombie_liste:
     #     pygame.draw.rect(screen,"red",zombie.Rect(),0,10)
-    
-    t0 = time.time()
+
     for i in range(len(Chunk1)):
         for b in range(len(Chunk1[i])):
-            if Chunk1[i][b] == 0:
-                pygame.draw.rect(screen,"green",(b*16,i*16,16,16))
-            else:
+            if Chunk1[i,b] == 0:
+                # pygame.draw.rect(screen,"green",(b*16,i*16,16,16))
+                screen.blit(list_loaded_tiles[0].image,(b*16,i*16))
+                
+            if Chunk1[i,b] == 1:
                 pygame.draw.rect(screen,"blue",(b*16,i*16,16,16))
-    t_last = time.time() - t0
 
-    list_t0.append(t_last)
+
     Human1.moove(keys,dt)
     screen.blit(Human1.image,Human1.pos)
     if mouse_click == (True,False,False) and not clicked:

@@ -20,7 +20,6 @@ class Humanoid():
             self.vect = self.vect.normalize()
         self.pos += self.vect
         self.vect = pygame.math.Vector2(0,0)
-        print(self.pos)
     
 class Humain(Humanoid):
     def __init__(self, x, y, speed, type, name, image):
