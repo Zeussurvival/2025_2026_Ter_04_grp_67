@@ -60,7 +60,7 @@ Chunk1 = np.array([[0,0,1,1,0,0],
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
-image_grass = pygame.image.load(r"C:\Users\gunnarsson1\Documents\GitHub\2025_2026_Ter_04_grp_67\Tiles\Grass\Grass.png")
+image_grass = pygame.image.load(r"C:\Users\gunnarsson1\Documents\GitHub\2025_2026_Ter_04_grp_67\Tiles\Grass\Grass_2.png")
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -68,12 +68,8 @@ while running:
     screen.fill("purple")
 
     for i in range(len(Chunk1)):
-        print("i est fait")
         for b in range(len(Chunk1[i])):
-            print("b est fait")
             coords = 100+b*16,100+i*16
-            print("BBB",Chunk1[i])
-            print("AAA",i,b)
             if Chunk1[i,b] == 0:
                 print(Chunk1[i,b])
                 print(coords)
@@ -86,7 +82,7 @@ while running:
             #     # print("BBBBBBBBBBBBBB",i,b)
             #     print(i*16,b*16)
             #     pygame.draw.rect(screen,"red",(b*16,i*16,16,16))
-
+    screen.blit(image_grass,(100,500))
     pygame.draw.line(screen,"white",(100,0),(100,1200))
     pygame.draw.line(screen,"white",(116,0),(116,1200))
     pygame.draw.line(screen,"white",(132,0),(132,1200))

@@ -57,17 +57,9 @@ Pompe = I.Weapon(25,6,10)
 Chunk1 = np.array([[0,0,1,0,0],
                 [0,0,1,0,0],
                 [0,0,1,0,0],
-                [0,1,1,1,0]])
+                [0,1,3,2,0]])
 
-list_loaded_tiles = [T.Grass(None,None,None,"Grass.png"),T.Road(None,None,None,"Road_01.png")]
-
-
-
-
-
-
-
-
+list_loaded_tiles = [T.Grass(None,None,None,"Grass_2.png"),T.Road(None,None,None,"Road_0.png"),T.Road(None,None,None,"Road_1.png"),T.Road(None,None,None,"Road_4.png")]
 
 
 
@@ -97,12 +89,8 @@ while running:
 
     for i in range(len(Chunk1)):
         for b in range(len(Chunk1[i])):
-            if Chunk1[i,b] == 0:
                 # pygame.draw.rect(screen,"green",(b*16,i*16,16,16))
-                screen.blit(list_loaded_tiles[0].image,(b*16,i*16))
-                
-            if Chunk1[i,b] == 1:
-                pygame.draw.rect(screen,"blue",(b*16,i*16,16,16))
+                screen.blit(list_loaded_tiles[Chunk1[i,b]].image,(b*16,i*16))
 
 
     Human1.moove(keys,dt)
