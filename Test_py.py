@@ -28,6 +28,7 @@ class Imagee():
     def __init__(self,name):
         self.real_img = pygame.image.load(os.path.join(img_dir, name)).convert_alpha()
         self.real_img = pygame.transform.scale(self.real_img,(16,16))
+        
         self.img = self.real_img
         self.rect = self.img.get_rect()
     def draw_self(self,pos):
@@ -54,12 +55,12 @@ Pompe = I.Weapon(25,6,10)
 # Zombie_liste.append(H.Humanoid(random.randint(0,S_WIDTH),random.randint(0,S_HEIGHT),80,80,300,"Zombie", name))
 # if pygame.Rect.collidepoint(Walls.rect(Wall1),mouse_pos[0],mouse_pos[1]) and mouse_click == (True,False,False) and not clicked:
 #     clicked = True
-Chunk1 = np.array([[0,0,1,0,0],
-                [0,0,1,0,0],
-                [0,0,1,0,0],
-                [0,1,3,2,0]])
+Chunk1 = np.array([[0,0,3,2,0],
+                [0,0,1,2,0],
+                [0,0,1,2,0],
+                [0,3,4,2,0]])
 
-list_loaded_tiles = [T.Grass(None,None,None,"Grass_2.png"),T.Road(None,None,None,"Road_0.png"),T.Road(None,None,None,"Road_1.png"),T.Road(None,None,None,"Road_4.png")]
+list_loaded_tiles = [T.Grass(None,None,None,"Grass_2.png",0),T.Road(None,None,None,"Road_0.png",0),T.Road(None,None,None,"Road_0.png",-180),T.Road(None,None,None,"Road_coin_1.png",0),T.Road(None,None,None,"Road_4.png",0)]
 
 
 

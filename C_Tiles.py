@@ -5,20 +5,21 @@ print(main_dir)
 img_dir = os.path.join(main_dir,"Tiles") 
 
 class TILE():
-    def __init__(self,obj,image):
+    def __init__(self,obj,image,rotate):
         self.obj_on = obj
         print(img_dir,image)
         self.image = pygame.image.load(os.path.join(img_dir, image)).convert_alpha()
+        self.image = pygame.transform.rotate(self.image,rotate)
     def draw_self(self):
         pass
 class Grass(TILE):
-    def __init__(self, obj,collision,sound_on,image):
-        super().__init__(obj,os.path.join(img_dir, f"Grass/{image}"))
+    def __init__(self, obj,collision,sound_on,image,rotate):
+        super().__init__(obj,os.path.join(img_dir, f"Grass/{image}"),rotate)
         self.collision = collision
         self.sound_on = sound_on
 class Road(TILE):
-    def __init__(self, obj, collision,sound_on,image):
-        super().__init__(obj,os.path.join(img_dir, f"Road/{image}"))
+    def __init__(self, obj, collision,sound_on,image,rotate):
+        super().__init__(obj,os.path.join(img_dir, f"Road/{image}"),rotate)
         self.collision = collision
         self.sound_on = sound_on
 
