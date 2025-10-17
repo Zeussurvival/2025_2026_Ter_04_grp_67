@@ -48,19 +48,28 @@ Zombie_liste = [Zombie1]
 
 with open("Items.json","r") as f:
     Items = json.loads(f.read())
-print(Items)
+# print(Items)
 Deagle = I.Weapon(10,7,100)
 Pompe = I.Weapon(25,6,10)
 # name = "Zombie" + str(len(Zombie_liste) + 1)
 # Zombie_liste.append(H.Humanoid(random.randint(0,S_WIDTH),random.randint(0,S_HEIGHT),80,80,300,"Zombie", name))
 # if pygame.Rect.collidepoint(Walls.rect(Wall1),mouse_pos[0],mouse_pos[1]) and mouse_click == (True,False,False) and not clicked:
 #     clicked = True
-Chunk1 = np.array([[0,0,3,2,0],
-                [0,0,1,2,0],
-                [0,0,1,2,0],
-                [0,3,4,2,0]])
+Chunk1 = np.array([[13,13,13,13,13,13,13,13,13],
+                   [13,13, 4, 7,13,13,13,13,13],
+                   [13,13, 0, 2,13,13,13,18,13],
+                   [13,13, 0, 2,13,13,13,17,13],
+                   [13, 4, 8, 2,13,13,13,16,13],
+                   [13, 0,14, 11, 3, 3,13,15,13]])
 
-list_loaded_tiles = [T.Grass(None,None,None,"Grass_2.png",0),T.Road(None,None,None,"Road_0.png",0),T.Road(None,None,None,"Road_0.png",-180),T.Road(None,None,None,"Road_coin_1.png",0),T.Road(None,None,None,"Road_4.png",0)]
+list_loaded_tiles = [T.Road(None,None,None,"Road_0.png",0),T.Road(None,None,None,"Road_0.png",90),T.Road(None,None,None,"Road_0.png",180),T.Road(None,None,None,"Road_0.png",270),\
+    T.Road(None,None,None,"Road_coin_1.png",0),T.Road(None,None,None,"Road_coin_1.png",90),T.Road(None,None,None,"Road_coin_1.png",180),T.Road(None,None,None,"Road_coin_1.png",270),\
+    T.Road(None,None,None,"Road_anticoin_1.png",0),T.Road(None,None,None,"Road_anticoin_1.png",90),T.Road(None,None,None,"Road_anticoin_1.png",180),T.Road(None,None,None,"Road_anticoin_1.png",270),\
+    T.Grass(None,None,None,"Grass_0.png",0),\
+    T.Grass(None,None,None,"Grass_01.png",0),\
+    T.Road(None,None,None,"Road_empty_1.png",0),\
+    T.Tree(None,None,None,"Tree_1_bottom.png",0),T.Tree(None,None,None,"Tree_1.png",0),T.Tree(None,None,None,"Tree_1_top.png",0),T.Tree(None,None,None,"Tree_1_leaves_1.png",0),\
+            ]
 
 
 
