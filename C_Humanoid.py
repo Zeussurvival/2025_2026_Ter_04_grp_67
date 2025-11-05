@@ -20,6 +20,8 @@ class Humanoid():
             self.vect = self.vect.normalize()
         self.pos += self.vect
         self.vect = pygame.math.Vector2(0,0)
+    def draw_self(self,screen,pos,global_sizes):
+        screen.blit(pygame.transform.scale(self.image,(16*global_sizes[0],16*global_sizes[1]))  ,(pos[0]*16*global_sizes[0],pos[1]*16*global_sizes[1]))
     
 class Humain(Humanoid):
     def __init__(self, x, y, speed, type, name, image):

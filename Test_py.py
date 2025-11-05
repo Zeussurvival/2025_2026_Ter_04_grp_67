@@ -19,6 +19,8 @@ dt = 0
 CONVERSION_CARRE_PIXEL = 16
 CONVERSION_PIXEL_CARRE = 1/16
 
+GLOBAL_X_SIZE = round(S_WIDTH / 200)
+GLOBAL_Y_SIZE = round(S_HEIGHT / 200)
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 img_dir = os.path.join(main_dir,"Image")
@@ -42,7 +44,7 @@ Wall_liste = [Wall1]
 
 
 
-Human1 = H.Humain(0,0,30,"Humain","Bob",Img_Humain.real_img)
+Human1 = H.Humain(0,0,10,"Humain","Bob",Img_Humain.real_img)
 Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None)
 Zombie_liste = [Zombie1] 
 
@@ -55,12 +57,22 @@ Pompe = I.Weapon(25,6,10)
 # Zombie_liste.append(H.Humanoid(random.randint(0,S_WIDTH),random.randint(0,S_HEIGHT),80,80,300,"Zombie", name))
 # if pygame.Rect.collidepoint(Walls.rect(Wall1),mouse_pos[0],mouse_pos[1]) and mouse_click == (True,False,False) and not clicked:
 #     clicked = True
-Chunk1 = np.array([[13,13,13,13,13,13,13,13,13],
-                   [13,13, 4, 7,13,13,13,13,13],
-                   [13,13, 0, 2,13,13,13,18,13],
-                   [13,13, 0, 2,13,13,13,17,13],
-                   [13, 4, 8, 2,13,13,13,16,13],
-                   [13, 0,14, 11, 3, 3,13,15,13]])
+Chunk1 = np.array([[13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                   [13,13, 4, 7,13,13,13,13,13,13,13,13,13,13,13,13],
+                   [13,13, 0, 2,13,13,13,18,13,13,13,13,13,13,13,13],
+                   [13,13, 0, 2,13,13,13,17,13,13,13,13,13,13,13,13],
+                   [13, 4, 8, 2,13,13,13,16,13,13,13,13,13,13,13,13],
+                   [13, 0,14,11, 3, 3,13,15,13,13,13,13,13,13,13,13],
+                   [13, 0,14,14,13,12,13,13,13,13,13,13,13,13,13,13],
+                   [13, 0,14,14,13,12,13,13,13,13,13,13,13,13,13,13],
+                   [13, 0,14,14,13,13,13,13,13,13,13,13,13,13,13,13],
+                   [13, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13]])
 
 list_loaded_tiles = [T.Road(None,None,None,"Road_0.png",0),T.Road(None,None,None,"Road_0.png",90),T.Road(None,None,None,"Road_0.png",180),T.Road(None,None,None,"Road_0.png",270),\
     T.Road(None,None,None,"Road_coin_1.png",0),T.Road(None,None,None,"Road_coin_1.png",90),T.Road(None,None,None,"Road_coin_1.png",180),T.Road(None,None,None,"Road_coin_1.png",270),\
@@ -86,7 +98,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    screen.fill("purple")
+    screen.fill((40,0,150))
 
     keys = pygame.key.get_pressed()
     mouse_pos = pygame.mouse.get_pos()
@@ -100,11 +112,13 @@ while running:
     for i in range(len(Chunk1)):
         for b in range(len(Chunk1[i])):
                 # pygame.draw.rect(screen,"green",(b*16,i*16,16,16))
-                screen.blit(list_loaded_tiles[Chunk1[i,b]].image,(b*16,i*16))
+                # screen.blit(list_loaded_tiles[Chunk1[i,b]].image,(b*16*GLOBAL_ZOOM,i*16*GLOBAL_ZOOM))
+                list_loaded_tiles[Chunk1[i,b]].draw_self(screen,(b,i),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
 
 
     Human1.moove(keys,dt)
-    screen.blit(Human1.image,Human1.pos)
+    Human1.draw_self(screen,Human1.pos,(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
+
     if mouse_click == (True,False,False) and not clicked:
         Deagle.shoot()
         clicked = True

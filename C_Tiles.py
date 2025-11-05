@@ -8,8 +8,10 @@ class TILE():
         self.obj_on = obj
         self.image = pygame.image.load(os.path.join(img_dir, image)).convert_alpha()
         self.image = pygame.transform.rotate(self.image,rotate)
-    def draw_self(self):
-        pass
+        self.image = pygame.transform.scale(self.image,(16,16))
+    def draw_self(self,screen,pos,global_sizes):
+        screen.blit(pygame.transform.scale(self.image,(16*global_sizes[0],16*global_sizes[1]))  ,(pos[0]*16*global_sizes[0],pos[1]*16*global_sizes[1]))
+        # screen.blit(list_loaded_tiles[Chunk1[i,b]].image,(b*16*GLOBAL_ZOOM,i*16*GLOBAL_ZOOM))
 class Tree(TILE):
     def __init__(self, obj,collision,sound_on,image,rotate):
         super().__init__(obj,os.path.join(img_dir, f"Tree/{image}"),rotate)
