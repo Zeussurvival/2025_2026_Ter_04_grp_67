@@ -20,7 +20,7 @@ CONVERSION_CARRE_PIXEL = 16
 CONVERSION_PIXEL_CARRE = 1/16
 
 GLOBAL_X_SIZE = round(S_WIDTH / 200)
-GLOBAL_Y_SIZE = round(S_HEIGHT / 200)
+GLOBAL_Y_SIZE = round(S_WIDTH / 200)
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 img_dir = os.path.join(main_dir,"Image")
@@ -44,7 +44,7 @@ Wall_liste = [Wall1]
 
 
 
-Human1 = H.Humain(0,0,10,"Humain","Bob",Img_Humain.real_img)
+Human1 = H.Humain(0,0,1,"Humain","Bob",Img_Humain.real_img)
 Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None)
 Zombie_liste = [Zombie1] 
 

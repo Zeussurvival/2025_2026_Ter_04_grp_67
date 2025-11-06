@@ -16,8 +16,10 @@ class Humanoid():
             self.vect[0] -= self.speed * dt
         if keys[pygame.K_d]:
             self.vect[0] += self.speed * dt
-        if self.vect.length() > 1:
-            self.vect = self.vect.normalize()
+        print(self.vect.length())
+        if self.vect.length() / (self.speed *dt + 10 **-10) > 1:
+            print('did it')
+            self.vect = self.vect.normalize() *self.speed *dt
         self.pos += self.vect
         self.vect = pygame.math.Vector2(0,0)
     def draw_self(self,screen,pos,global_sizes):
