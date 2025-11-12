@@ -83,6 +83,19 @@ list_loaded_tiles = [T.Road(None,None,None,"Road_0.png",0),T.Road(None,None,None
     T.Tree(None,None,None,"Tree_1_bottom.png",0),T.Tree(None,None,None,"Tree_1.png",0),T.Tree(None,None,None,"Tree_1_top.png",0),T.Tree(None,None,None,"Tree_1_leaves_1.png",0),\
             ]
 
+def tiles_in_screen(Human_pos,screen_size,global_sizes):
+    abc = screen_size[0]/(2*16*global_sizes[0])
+    defg = screen_size[1]/(2*16*global_sizes[0])
+    return [(Human_pos[0]-abc,Human_pos[1]-defg),(Human_pos[0]+abc,Human_pos[1]+defg)]
+    
+def new_chunk(matrice,pos_list):
+    pos1 = ((round(pos_list[0][0])-1),round(pos_list[0][1])-1)
+    pos2 = ((round(pos_list[1][0])+2),round(pos_list[1][1])+2)
+    print(pos1,pos2)
+    return matrice[pos1[0]:pos2[0],pos1[1]:pos2[1]]
+
+
+
 
 
 
@@ -108,7 +121,8 @@ while running:
         pygame.draw.rect(screen,"white",W.Walls.rect(Wall1))
     # for zombie in Zombie_liste:
     #     pygame.draw.rect(screen,"red",zombie.Rect(),0,10)
-
+    # print(tiles_in_screen(Human1.pos,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE)))
+    print(new_chunk(Chunk1,tiles_in_screen(Human1.pos,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))))
     for i in range(len(Chunk1)):
         for b in range(len(Chunk1[i])):
                 # pygame.draw.rect(screen,"green",(b*16,i*16,16,16))
