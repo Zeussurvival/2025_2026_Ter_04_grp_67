@@ -127,11 +127,12 @@ while running:
         for b in range(len(Chunk1[i])):
                 # pygame.draw.rect(screen,"green",(b*16,i*16,16,16))
                 # screen.blit(list_loaded_tiles[Chunk1[i,b]].image,(b*16*GLOBAL_ZOOM,i*16*GLOBAL_ZOOM))
-                list_loaded_tiles[Chunk1[i,b]].draw_self(screen,(b,i),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
+                list_loaded_tiles[Chunk1[i,b]].draw_self(screen,(b-Human1.pos[0],i-Human1.pos[1]),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
 
 
     Human1.moove(keys,dt)
-    Human1.draw_self(screen,Human1.pos,(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
+    # Human1.draw_self(screen,Human1.pos,(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
+    Human1.draw_center(screen,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
 
     if mouse_click == (True,False,False) and not clicked:
         Deagle.shoot()
