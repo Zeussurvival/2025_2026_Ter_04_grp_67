@@ -20,11 +20,11 @@ class Humanoid():
             self.vect = self.vect.normalize() * self.speed *dt
         self.pos += self.vect
         self.vect = pygame.math.Vector2(0,0)
-        print(self.pos)
+
     def draw_self(self,screen,pos,global_sizes):
         screen.blit(pygame.transform.scale(self.image,(16*global_sizes[0],16*global_sizes[1]))  ,(pos[0]*16*global_sizes[0],pos[1]*16*global_sizes[1]))
     def draw_center(self,screen,screen_sizes,global_sizes):
-        screen.blit(pygame.transform.scale(self.image,(16*global_sizes[0],16*global_sizes[1])), (screen_sizes[0]/2 -16*global_sizes[0]/2,screen_sizes[1]/2 -16*global_sizes[1]/2,))
+        screen.blit(pygame.transform.scale(self.image,(16*global_sizes[0],16*global_sizes[1])), (screen_sizes[0]/2 -16*global_sizes[0]/2,screen_sizes[1]/2 -16*global_sizes[1]/2))
                     
     
 class Humain(Humanoid):
