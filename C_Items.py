@@ -1,16 +1,22 @@
 import time
 class Item():
-    def __init__(self,name,type,lore,damage):
+    def __init__(self,name,type,lore,position):
+        if position is tuple:
+            self.state = "ground"
+        else:
+            self.state = "inventory"
+            
+        self.position = position
         self.name = name
         self.type = type
         self.lore = lore
-        if type == "weapon":
-            self.damage = damage
-    def print(self):
-        print(self.name,self.type,self.lore)
 
-class Weapon():
-    def __init__(self,damage,chargeur,range):
+    def print(self):
+        print(self.name,self.type,self.lore,self.position)
+
+class Weapon(Item):
+    def __init__(self, damage, chargeur, range, position, name, type, lore):
+        super().__init__(name,type,lore,position)
         self.damage = damage
         self.balle_actu = chargeur
         self.chargeur = chargeur
@@ -30,9 +36,13 @@ class Weapon():
         if time.time() - self.time_reload > 2 and self.reloading:
             self.reloading = False
             self.balle_actu = self.chargeur
-    def print(self):
+    def print_balle(self):
         print(self.balle_actu)
 
 class pistolet(Weapon):
-    def __init__(self, damage, chargeur, range):
-        super().__init__(damage, chargeur, range)
+    def __init__(self, damage, chargeur, range, position, name, type, lore):
+        super().__init__(damage, chargeur, range, position ,name, type, lore)
+
+pistolet1 = pistolet(10,6,50,(0,10),"Old Jhon's gun","gun","Jhon avait 10 de killstreak")
+pistolet1.print()
+pistolet1.print_balle()

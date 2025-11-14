@@ -7,7 +7,7 @@ class Humanoid():
         self.name = name
         self.speed = speed
         self.image = image
-    def moove(self,keys,dt):
+    def moove(self,keys,dt,global_sizes):
         if keys[pygame.K_z]:
             self.vect[1] -= self.speed * dt
         if keys[pygame.K_s]:
@@ -19,6 +19,10 @@ class Humanoid():
         if self.vect.length() / (self.speed *dt + 10 **-10) > 1:
             self.vect = self.vect.normalize() * self.speed *dt
         self.pos += self.vect
+        if self.pos[0] -global_sizes[0]/16 < 0:
+            self.pos[0] = global_sizes[0]/16 +0.01
+        if self.pos[1] -global_sizes[1]/16 < 0:
+            self.pos[1] = global_sizes[1]/16 +0.01
         self.vect = pygame.math.Vector2(0,0)
         print(self.pos)
 

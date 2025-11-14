@@ -4,8 +4,7 @@ main_dir = os.path.split(os.path.abspath(__file__))[0]
 img_dir = os.path.join(main_dir,"Tiles") 
 
 class TILE():
-    def __init__(self,obj,image,rotate):
-        self.obj_on = obj
+    def __init__(self,image,rotate):
         self.image = pygame.image.load(os.path.join(img_dir, image)).convert_alpha()
         self.image = pygame.transform.rotate(self.image,rotate)
         self.image = pygame.transform.scale(self.image,(16,16))
@@ -13,18 +12,18 @@ class TILE():
         screen.blit(pygame.transform.scale(self.image,(16*global_sizes[0],16*global_sizes[1]))  ,(pos[0]*16*global_sizes[0],pos[1]*16*global_sizes[1]))
         # screen.blit(list_loaded_tiles[Chunk1[i,b]].image,(b*16*GLOBAL_ZOOM,i*16*GLOBAL_ZOOM))
 class Tree(TILE):
-    def __init__(self, obj,collision,sound_on,image,rotate):
-        super().__init__(obj,os.path.join(img_dir, f"Tree/{image}"),rotate)
+    def __init__(self,collision,sound_on,image,rotate):
+        super().__init__(os.path.join(img_dir, f"Tree/{image}"),rotate)
         self.collision = collision
         self.sound_on = sound_on
 class Grass(TILE):
-    def __init__(self, obj,collision,sound_on,image,rotate):
-        super().__init__(obj,os.path.join(img_dir, f"Grass/{image}"),rotate)
+    def __init__(self,collision,sound_on,image,rotate):
+        super().__init__(os.path.join(img_dir, f"Grass/{image}"),rotate)
         self.collision = collision
         self.sound_on = sound_on
 class Road(TILE):
-    def __init__(self, obj, collision,sound_on,image,rotate):
-        super().__init__(obj,os.path.join(img_dir, f"Road/{image}"),rotate)
+    def __init__(self, collision,sound_on,image,rotate):
+        super().__init__(os.path.join(img_dir, f"Road/{image}"),rotate)
         self.collision = collision
         self.sound_on = sound_on
 
