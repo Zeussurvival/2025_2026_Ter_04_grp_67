@@ -29,7 +29,7 @@ print(img_dir)
 class Imagee():
     def __init__(self,name):
         self.real_img = pygame.image.load(os.path.join(img_dir, name)).convert_alpha()
-        self.real_img = pygame.transform.scale(self.real_img,(16,16))
+        # self.real_img = pygame.transform.scale(self.real_img,(16,16))
         
         self.img = self.real_img
         self.rect = self.img.get_rect()
@@ -44,7 +44,7 @@ Wall_liste = [Wall1]
 
 
 
-Human1 = H.Humain(0,0,5,"Humain","Bob",Img_Humain.real_img)
+Human1 = H.Humain(0,0,1,"Humain","Bob",Img_Humain.real_img)
 Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None)
 Zombie_liste = [Zombie1] 
 
@@ -83,35 +83,35 @@ list_loaded_tiles = [T.Road(None,None,None,"Road_0.png",0),T.Road(None,None,None
     T.Tree(None,None,None,"Tree_1_bottom.png",0),T.Tree(None,None,None,"Tree_1.png",0),T.Tree(None,None,None,"Tree_1_top.png",0),T.Tree(None,None,None,"Tree_1_leaves_1.png",0),\
             ]
 
-def tiles_in_screen(Human_pos,screen_size,global_sizes):
-    abc = screen_size[0]/(2*16*global_sizes[0])
-    defg = screen_size[1]/(2*16*global_sizes[0])
-    return [(Human_pos[0]-abc,Human_pos[1]-defg),(Human_pos[0]+abc,Human_pos[1]+defg)]
+# def tiles_in_screen(Human_pos,screen_size,global_sizes):
+#     abc = screen_size[0]/(2*16*global_sizes[0])
+#     defg = screen_size[1]/(2*16*global_sizes[0])
+#     return [(Human_pos[0]-abc,Human_pos[1]-defg),(Human_pos[0]+abc,Human_pos[1]+defg)]
     
-def new_chunk(matrice,pos_list):
+# def new_chunk(matrice,pos_list):
 
-    pos1 = verify_pos1(((plus_or_0_round(pos_list[0][0]-1)),plus_or_0_round(pos_list[0][1]-1)))
-    pos2 = verify_pos2(((plus_or_0_round(pos_list[1][0]+1)),plus_or_0_round(pos_list[1][1]+1)))
+#     pos1 = verify_pos1(((pos_list[0][0]-1),pos_list[0][1]-1))
+#     pos2 = verify_pos2(((pos_list[1][0]+1),pos_list[1][1]+1))
 
-    return matrice[pos1[1]:pos2[1],pos1[0]:pos2[0]]
+#     return matrice[plus_or_0_round(pos1[1]):plus_or_0_round(pos2[1]),plus_or_0_round(pos1[0]):plus_or_0_round(pos2[0])]
 
-def plus_or_0_round(n):
-    if n <= 0:
-        return 0
-    else:
-        return round(n)
+# def plus_or_0_round(n):
+#     if n <= 0:
+#         return 0
+#     else:
+#         return round(n)
 
-def verify_pos1(pos1):
-    pos1 = list(pos1)
-    while pos1[0] -pos1[1] > 15:
-        pos1[1] = pos1[1] -1
-    return tuple(pos1)
+# def verify_pos1(pos1):
+#     pos1 = list(pos1)
+#     while pos1[0] -pos1[1] > 15:
+#         pos1[1] = pos1[1] -1
+#     return tuple(pos1)
 
-def verify_pos2(pos2):
-    pos2 = list(pos2)
-    while pos2[1] -pos2[0] > 10:
-        pos2[1] =  pos2[1] -1
-    return tuple(pos2)
+# def verify_pos2(pos2):
+#     pos2 = list(pos2)
+#     while pos2[1] -pos2[0] > 10:
+#         pos2[1] =  pos2[1] -1
+#     return tuple(pos2)
 
 
 
@@ -143,14 +143,15 @@ while running:
     # for zombie in Zombie_liste:
     #     pygame.draw.rect(screen,"red",zombie.Rect(),0,10)
     # print(tiles_in_screen(Human1.pos,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE)))
-    pos_list = tiles_in_screen(Human1.pos,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
-    chunk_shown = new_chunk(matrice=Chunk1, pos_list=pos_list)
-    print(pos_list)
-    for i in range(len(chunk_shown)):
-        for b in range(len(chunk_shown[i])):
+    # pos_list = tiles_in_screen(Human1.pos,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
+    # chunk_shown = new_chunk(matrice=Chunk1, pos_list=pos_list)
+    # print(pos_list)
+    for i in range(len(Chunk1)):
+        for b in range(len(Chunk1[i])):
                 # pygame.draw.rect(screen,"green",(b*16,i*16,16,16))
                 # screen.blit(list_loaded_tiles[Chunk1[i,b]].image,(b*16*GLOBAL_ZOOM,i*16*GLOBAL_ZOOM))
-                list_loaded_tiles[chunk_shown[i,b]].draw_self(screen,(b-Human1.pos[0] + S_WIDTH/(2*16*GLOBAL_X_SIZE),i-Human1.pos[1] + S_HEIGHT/(2*16*GLOBAL_Y_SIZE)),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE)) # IL FAUT ENLEVER pos_list[0][0] si c positif OU RETIRER JSP
+                tuty = 2*16*GLOBAL_X_SIZE
+                list_loaded_tiles[Chunk1[i,b]].draw_self(screen,(b,i),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
 
 
     Human1.moove(keys,dt)
