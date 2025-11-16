@@ -10,7 +10,7 @@ import json
 # import random
 # import math
 pygame.init()
-S_WIDTH,S_HEIGHT = 1280, 720
+S_WIDTH,S_HEIGHT = 720, 1000
 
 screen = pygame.display.set_mode((S_WIDTH,S_HEIGHT))
 clock = pygame.time.Clock()
@@ -49,13 +49,14 @@ Zombie_liste = [Zombie1]
 with open("Items.json","r") as f:
     Items = json.loads(f.read())
 # print(Items)
-Deagle = I.Weapon(10,7,100,(5,5),"Deagle","gun","Jtah Fortnite prime")
+Deagle = I.Weapon(10,7,100,(5,5),"Deagle","gun","tah Fortnite prime")
 Pompe = I.Weapon(25,6,10,(7,5),"Spas 12","gun","Boom -200 headshot")
 # name = "Zombie" + str(len(Zombie_liste) + 1)
 # Zombie_liste.append(H.Humanoid(random.randint(0,S_WIDTH),random.randint(0,S_HEIGHT),80,80,300,"Zombie", name))
 # if pygame.Rect.collidepoint(Walls.rect(Wall1),mouse_pos[0],mouse_pos[1]) and mouse_click == (True,False,False) and not clicked:
 #     clicked = True
-Chunk1 = np.array([[13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+
+Map_tiles = np.array([[13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
                    [13,13, 4, 7,13,13,13,13,13,13,13,13,13,13,13,13],
                    [13,13, 0, 2,13,13,13,18,13,13,13,13,13,13,13,13],
                    [13,13, 0, 2,13,13,13,17,13,13,13,13,13,13,13,13],
@@ -72,13 +73,18 @@ Chunk1 = np.array([[13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
                    [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
                    [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13]])
 
-list_loaded_tiles = [T.Road(None,None,"Road_0.png",0),T.Road(None,None,"Road_0.png",90),T.Road(None,None,"Road_0.png",180),T.Road(None,None,"Road_0.png",270),\
-    T.Road(None,None,"Road_coin_1.png",0),T.Road(None,None,"Road_coin_1.png",90),T.Road(None,None,"Road_coin_1.png",180),T.Road(None,None,"Road_coin_1.png",270),\
-    T.Road(None,None,"Road_anticoin_1.png",0),T.Road(None,None,"Road_anticoin_1.png",90),T.Road(None,None,"Road_anticoin_1.png",180),T.Road(None,None,"Road_anticoin_1.png",270),\
-    T.Grass(None,None,"Grass_0.png",0),\
-    T.Grass(None,None,"Grass_01.png",0),\
-    T.Road(None,None,"Road_empty_1.png",0),\
-    T.Tree(None,None,"Tree_1_bottom.png",0),T.Tree(None,None,"Tree_1.png",0),T.Tree(None,None,"Tree_1_top.png",0),T.Tree(None,None,"Tree_1_leaves_1.png",0),\
+
+Map_collision = np.zeros(Map_tiles.shape)
+Map_collision[5,7] = 1 
+print(Map_collision)
+
+list_loaded_tiles = [T.Road(None,"Road_0.png",0),T.Road(None,"Road_0.png",90),T.Road(None,"Road_0.png",180),T.Road(None,"Road_0.png",270),\
+    T.Road(None,"Road_coin_1.png",0),T.Road(None,"Road_coin_1.png",90),T.Road(None,"Road_coin_1.png",180),T.Road(None,"Road_coin_1.png",270),\
+    T.Road(None,"Road_anticoin_1.png",0),T.Road(None,"Road_anticoin_1.png",90),T.Road(None,"Road_anticoin_1.png",180),T.Road(None,"Road_anticoin_1.png",270),\
+    T.Grass(None,"Grass_0.png",0),\
+    T.Grass(None,"Grass_01.png",0),\
+    T.Road(None,"Road_empty_1.png",0),\
+    T.Tree(None,"Tree_1_bottom.png",0),T.Tree(None,"Tree_1.png",0),T.Tree(None,"Tree_1_top.png",0),T.Tree(None,"Tree_1_leaves_1.png",0),\
             ]
 
 # def tiles_in_screen(Human_pos,screen_size,global_sizes):
@@ -142,14 +148,14 @@ while running:
     #     pygame.draw.rect(screen,"red",zombie.Rect(),0,10)
     # print(tiles_in_screen(Human1.pos,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE)))
     # pos_list = tiles_in_screen(Human1.pos,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
-    # chunk_shown = new_chunk(matrice=Chunk1, pos_list=pos_list)
+    # chunk_shown = new_chunk(matrice=Map_tiles, pos_list=pos_list)
     # print(pos_list)
-    for i in range(len(Chunk1)):
-        for b in range(len(Chunk1[i])):
+    for i in range(len(Map_tiles)):
+        for b in range(len(Map_tiles[i])):
                 # pygame.draw.rect(screen,"green",(b*16,i*16,16,16))
-                # screen.blit(list_loaded_tiles[Chunk1[i,b]].image,(b*16*GLOBAL_ZOOM,i*16*GLOBAL_ZOOM))
+                # screen.blit(list_loaded_tiles[Map_tiles[i,b]].image,(b*16*GLOBAL_ZOOM,i*16*GLOBAL_ZOOM))
                 tuty = 2*16*GLOBAL_X_SIZE
-                list_loaded_tiles[Chunk1[i,b]].draw_self(screen,(b-Human1.pos[0]+S_WIDTH/(16*2*GLOBAL_X_SIZE),i-Human1.pos[1]+S_HEIGHT/(16*2*GLOBAL_X_SIZE)),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
+                list_loaded_tiles[Map_tiles[i,b]].draw_self(screen,(b-Human1.pos[0]+S_WIDTH/(16*2*GLOBAL_X_SIZE),i-Human1.pos[1]+S_HEIGHT/(16*2*GLOBAL_X_SIZE)),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
 
 
     Human1.moove(keys,dt,(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))

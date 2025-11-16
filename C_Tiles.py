@@ -12,19 +12,16 @@ class TILE():
         screen.blit(pygame.transform.scale(self.image,(16*global_sizes[0],16*global_sizes[1]))  ,(pos[0]*16*global_sizes[0],pos[1]*16*global_sizes[1]))
         # screen.blit(list_loaded_tiles[Chunk1[i,b]].image,(b*16*GLOBAL_ZOOM,i*16*GLOBAL_ZOOM))
 class Tree(TILE):
-    def __init__(self,collision,sound_on,image,rotate):
+    def __init__(self,sound_on,image,rotate):
         super().__init__(os.path.join(img_dir, f"Tree/{image}"),rotate)
-        self.collision = collision
         self.sound_on = sound_on
 class Grass(TILE):
-    def __init__(self,collision,sound_on,image,rotate):
+    def __init__(self,sound_on,image,rotate):
         super().__init__(os.path.join(img_dir, f"Grass/{image}"),rotate)
-        self.collision = collision
         self.sound_on = sound_on
 class Road(TILE):
-    def __init__(self, collision,sound_on,image,rotate):
+    def __init__(self,sound_on,image,rotate):
         super().__init__(os.path.join(img_dir, f"Road/{image}"),rotate)
-        self.collision = collision
         self.sound_on = sound_on
 
 
