@@ -4,13 +4,13 @@ import time
 import numpy as np
 import C_Items as I
 import C_Humanoid as H
-import C_Walls as W
+# import C_Walls as W
 import C_Tiles as T
 import json
 # import random
 # import math
 pygame.init()
-S_WIDTH,S_HEIGHT = 720, 1000
+S_WIDTH,S_HEIGHT = 1280, 720
 
 screen = pygame.display.set_mode((S_WIDTH,S_HEIGHT))
 clock = pygame.time.Clock()
@@ -37,8 +37,6 @@ class Imagee():
 
 
 Img_Humain = Imagee("Player.png")
-Wall1 = W.Walls(S_WIDTH - 180, 20,160,60)
-Wall_liste = [Wall1]
 
 
 
@@ -142,8 +140,7 @@ while running:
     mouse_pos = pygame.mouse.get_pos()
     mouse_click = pygame.mouse.get_pressed()
     
-    for obj in Wall_liste:
-        pygame.draw.rect(screen,"white",W.Walls.rect(Wall1))
+
     # for zombie in Zombie_liste:
     #     pygame.draw.rect(screen,"red",zombie.Rect(),0,10)
     # print(tiles_in_screen(Human1.pos,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE)))
