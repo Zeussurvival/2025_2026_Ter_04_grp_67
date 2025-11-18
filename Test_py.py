@@ -38,17 +38,17 @@ class Imagee():
 
 Img_Humain = Imagee("Player.png")
 
-
-
-Human1 = H.Humain(0,0,5,"Humain","Bob",Img_Humain.real_img)
-Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None)
+Couteau_depart = I.KNIFE(15, 1.5, None, "Couteau de cuisine", "Avant on l'utilisait pour couper la viande, maintenant pour couper du zombard",1)
+Inventaire = [Couteau_depart]
+Human1 = H.Humain(0,0,5,"Humain","Bob",Img_Humain.real_img,Inventaire,25,100,100)
+Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None,None,None,50,25)
 Zombie_liste = [Zombie1] 
 
 with open("Items.json","r") as f:
     Items = json.loads(f.read())
 # print(Items)
-Deagle = I.Weapon(10,7,100,(5,5),"Deagle","gun","tah Fortnite prime")
-Pompe = I.Weapon(25,6,10,(7,5),"Spas 12","gun","Boom -200 headshot")
+Deagle = I.GUN(10,7,100,(5,5),"Deagle","gun","tah Fortnite prime",3)
+Pompe = I.GUN(25,6,10,(7,5),"Spas 12","gun","Boom -200 headshot",3)
 # name = "Zombie" + str(len(Zombie_liste) + 1)
 # Zombie_liste.append(H.Humanoid(random.randint(0,S_WIDTH),random.randint(0,S_HEIGHT),80,80,300,"Zombie", name))
 # if pygame.Rect.collidepoint(Walls.rect(Wall1),mouse_pos[0],mouse_pos[1]) and mouse_click == (True,False,False) and not clicked:
@@ -82,7 +82,7 @@ list_loaded_tiles = [T.Road(None,"Road_0.png",0),T.Road(None,"Road_0.png",90),T.
     T.Grass(None,"Grass_0.png",0),\
     T.Grass(None,"Grass_01.png",0),\
     T.Road(None,"Road_empty_1.png",0),\
-    T.Tree(None,"Tree_1_bottom.png",0),T.Tree(None,"Tree_1.png",0),T.Tree(None,"Tree_1_top.png",0),T.Tree(None,"Tree_1_leaves_1.png",0),\
+    T.Tree(None,"Grass_1.png","Tree_1_bottom.png",0),T.Tree(None,"Grass_1.png","Tree_1.png",0),T.Tree(None,"Grass_1.png","Tree_1_top.png",0),T.Tree(None,"Grass_1.png","Tree_1_leaves_1.png",0),\
             ]
 
 # def tiles_in_screen(Human_pos,screen_size,global_sizes):
@@ -160,7 +160,8 @@ while running:
     Human1.draw_center(screen,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
 
     if mouse_click == (True,False,False) and not clicked:
-        Deagle.shoot()
+        Human1.inventaire[0].attack()
+        Human1.print_inventaire()
         clicked = True
     if clicked and mouse_click == (False,False,False):
         clicked = False
@@ -168,6 +169,7 @@ while running:
         Deagle.reload()
     
     Deagle.update()
+    Human1.do_everything(screen)
     pygame.display.flip()
     dt = clock.tick(60) / 1000
 
