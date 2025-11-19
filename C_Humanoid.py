@@ -125,9 +125,10 @@ class Humain(Humanoid):
         y = screen.get_size()[1] -lenght_square - y_offset
         for i in range(0,number_shown):
             pygame.draw.rect(screen,(200,200,200),(first_x+(lenght_square+width+offset)*i,y,true_lenght,true_lenght),width)
-            if i < len(self.inventaire):
+            if self.inventaire[i] != None:
                 screen.blit(pygame.transform.scale(self.inventaire[i].image,(lenght_square,lenght_square)),(first_x+width+(lenght_square+width+offset)*i,y+width))
-        pass
+        
+        pygame.draw.rect(screen,"white",(first_x+(lenght_square+width+offset)*self.held_item_indice  -2 ,y - 2,true_lenght + 4,true_lenght + 4 ),width+ 2)
 
 
     def do_everything(self,screen,FONT_None,dt):
@@ -154,6 +155,27 @@ class Humain(Humanoid):
             print(response)
             if response:
                 self.endurance -= 3
+
+
+    def change_held_item(self,keys):
+        if keys[pygame.K_1]:
+            self.held_item_indice = 0
+            self.held_item = self.inventaire[0]
+        if keys[pygame.K_2]:
+            self.held_item_indice = 1
+            self.held_item = self.inventaire[1]
+        if keys[pygame.K_3]:
+            self.held_item_indice = 2
+            self.held_item = self.inventaire[2]
+        if keys[pygame.K_4]:
+            self.held_item_indice = 3
+            self.held_item = self.inventaire[3]
+        if keys[pygame.K_5]:
+            self.held_item_indice = 4
+            self.held_item = self.inventaire[4]
+        pass
+
+
 class Zombie(Humanoid):
     def __init__(self, x, y, speed, typee, name, image, pv):
         super().__init__(x, y, speed, typee, name, image, pv)
