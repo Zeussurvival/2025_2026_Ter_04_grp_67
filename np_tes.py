@@ -121,4 +121,32 @@ pygame.font.init()
 # renault.print_self()
 # print(len([13,13,13,13,13,13,13,13,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
 
-print(pygame.font.get_fonts())
+# print(pygame.font.get_fonts())
+
+
+
+# import pygame
+
+# pygame.init()
+
+# # Petite fenêtre
+# screen = pygame.display.set_mode((400, 200))
+# pygame.display.set_caption("Carrés rouge - width 2 et width 25")
+
+# running = True
+# while running:
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             running = False
+
+#     screen.fill((30, 30, 30))  # fond gris foncé
+
+#     # Carré 1 : bordure fine (width = 2)
+#     pygame.draw.rect(screen, (255, 0, 0), (50, 50, 80, 80), width=2)
+
+#     # Carré 2 : bordure épaisse (width = 25)
+#     pygame.draw.rect(screen, (255, 0, 0), (170, 50, 80, 80), width=25)
+
+#     pygame.display.flip()
+
+# pygame.quit()

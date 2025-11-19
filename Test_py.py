@@ -41,9 +41,10 @@ class Imagee():
 Img_Humain = Imagee("Player.png")
 
 Couteau_depart = I.KNIFE(15, 1.5, None, "Couteau de cuisine", "Avant on l'utilisait pour couper la viande, maintenant pour couper du zombard",1,"Couteau_de_cuisine.png")
-Inventaire = [Couteau_depart]
+pomme = I.Eatable("Une pomme","récolté depuis un arbre",None,"Apple.png",15,10,10)
+Inventaire = [Couteau_depart,pomme,Couteau_depart,Couteau_depart]
 Human1 = H.Humain(0,0,2,"Humain","Bob",Img_Humain.real_img,Inventaire,25,100,100)
-Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None,None,None,50,25)
+Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None,25)
 Zombie_liste = [Zombie1] 
 
 with open("Items.json","r") as f:
@@ -129,7 +130,7 @@ list_loaded_tiles = [T.Road(None,"Road_0.png",0),T.Road(None,"Road_0.png",90),T.
 
 
 
-
+last_sprint = time.time()
 
 clicked = False
 while running:
@@ -162,15 +163,17 @@ while running:
     Human1.draw_center(screen,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
 
     if mouse_click == (True,False,False) and not clicked:
-        Human1.attack()
-        Human1.print_inventaire()
+        Human1.use_hand()
         clicked = True
     if clicked and mouse_click == (False,False,False):
         clicked = False
+    if keys[pygame.K_LSHIFT] and time.time()-last_sprint > 1:
+        last_sprint = time.time()
+        Human1.sprinting()
     if keys[pygame.K_r]:
         Deagle.reload()
     
-    Human1.inventaire[0].draw_self(screen)
+    # Human1.inventaire[0].draw_self(screen)
     Deagle.update()
     Human1.do_everything(screen,FONT_None,dt)
     pygame.display.flip()

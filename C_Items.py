@@ -36,15 +36,19 @@ class KNIFE(Item):
         self.cooldown = cooldown
         self.time_last_throw = 0
         self.attacking = False
+    
+    def use_self(self,endurance):
+        if endurance > 3:
+            return self.attack()
+
     def attack(self):
         if time.time() - self.time_last_throw > self.cooldown:
             self.attacking = True
             self.time_last_throw = time.time()
-            print("Could hit")
-            return True
+            # print("Could hit")
+            return self.attacking
         else:
-            
-            print("Ya un truc mais non")
+            # print("Ya un truc mais non")
             return False
     def update(self):
         if time.time() - self.time_reload > self.cooldown and self.reloading:
@@ -62,15 +66,20 @@ class GUN(Item):
         self.time_reload = 0
         self.range = range
         self.cooldown = cooldown
+
+    def use_self(self,endurance):
+        if endurance > 3:
+            return self.attack()
+
     def attack(self):
         if self.balle_actu > 0 and not self.reloading and time.time() - self.time_last_shoot > self.cooldown:
             self.balle_actu -= 1
             self.reloading = False
             self.time_last_shoot = time.time()
-            print("Shoot well")
+            # print("Shoot well")
             return True
         else:
-            print("Ya un truc mais non")
+            # print("Ya un truc mais non")
             return False
     def reload(self):
         self.reloading = True
@@ -90,8 +99,14 @@ class GUN(Item):
 
 
 class Eatable(Item):
-    def __init__(self, name, lore, position, hunger, endurance, heal):
-        super().__init__(name, lore, position)
+    def __init__(self, name, lore, position, image, hunger, endurance, heal):
+        super().__init__(name,lore,position,image)
         self.hunger = hunger
         self.endurance = endurance
         self.heal = heal
+
+    def use_self(self,endurance):
+        return self.eat()
+    
+    def eat(self):
+        print("pas implemente")
