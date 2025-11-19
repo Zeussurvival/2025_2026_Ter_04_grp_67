@@ -2,8 +2,8 @@ import numpy as np
 import pygame
 import random
 
-import pygame.image
 pygame.init()
+pygame.font.init()
 # liste0= []
 # liste_tot = []
 # for i in range(16):
@@ -104,19 +104,21 @@ pygame.init()
 
 
 
-class Voiture:
-    def __init__(self,modele,annee):
-        self.modele = modele 
-        self.annee = annee
-        self.list = [self.modele,self.annee]
-    def print_self(self):
-        print_list(self.list)
+# class Voiture:
+#     def __init__(self,modele,annee):
+#         self.modele = modele 
+#         self.annee = annee
+#         self.list = [self.modele,self.annee]
+#     def print_self(self):
+#         print_list(self.list)
 
-def print_list(liste):
-    for obj in liste:
-        print(obj, "et voila")
+# def print_list(liste):
+#     for obj in liste:
+#         print(obj, "et voila")
 
-renault = Voiture("clio",1970)
+# renault = Voiture("clio",1970)
 
-renault.print_self()
+# renault.print_self()
 # print(len([13,13,13,13,13,13,13,13,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+
+print(pygame.font.get_fonts())

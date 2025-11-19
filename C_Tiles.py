@@ -9,12 +9,9 @@ class TILE():
         self.image = pygame.transform.rotate(self.image,rotate)
         self.image = pygame.transform.scale(self.image,(16,16))
         if background_image != None:
-            print(background_image)
             self.background_image = pygame.image.load(os.path.join(bg_image_dir, background_image)).convert_alpha()
-            print(self.background_image)
         else:
             self.background_image = None
-        print(self.image)
     def draw_self(self,screen,pos,global_sizes):
         if isinstance(self.background_image, pygame.Surface):
             screen.blit(pygame.transform.scale(self.background_image,(16*global_sizes[0],16*global_sizes[1])) ,(pos[0]*16*global_sizes[0],pos[1]*16*global_sizes[1]))

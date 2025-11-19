@@ -4,14 +4,16 @@ import time
 import numpy as np
 import C_Items as I
 import C_Humanoid as H
-# import C_Walls as W
 import C_Tiles as T
 import json
 # import random
 # import math
 pygame.init()
+pygame.font.init()
+FONT_None = pygame.font.SysFont("timesnewroman", 30)
+FONT_combat = pygame.font.SysFont("haettenschweiler", 30)
 S_WIDTH,S_HEIGHT = 1280, 720
-
+print(pygame.font.get_fonts())
 screen = pygame.display.set_mode((S_WIDTH,S_HEIGHT))
 clock = pygame.time.Clock()
 running = True
@@ -38,17 +40,17 @@ class Imagee():
 
 Img_Humain = Imagee("Player.png")
 
-Couteau_depart = I.KNIFE(15, 1.5, None, "Couteau de cuisine", "Avant on l'utilisait pour couper la viande, maintenant pour couper du zombard",1)
+Couteau_depart = I.KNIFE(15, 1.5, None, "Couteau de cuisine", "Avant on l'utilisait pour couper la viande, maintenant pour couper du zombard",1,"Couteau_de_cuisine.png")
 Inventaire = [Couteau_depart]
-Human1 = H.Humain(0,0,5,"Humain","Bob",Img_Humain.real_img,Inventaire,25,100,100)
+Human1 = H.Humain(0,0,2,"Humain","Bob",Img_Humain.real_img,Inventaire,25,100,100)
 Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None,None,None,50,25)
 Zombie_liste = [Zombie1] 
 
 with open("Items.json","r") as f:
     Items = json.loads(f.read())
 # print(Items)
-Deagle = I.GUN(10,7,100,(5,5),"Deagle","gun","tah Fortnite prime",3)
-Pompe = I.GUN(25,6,10,(7,5),"Spas 12","gun","Boom -200 headshot",3)
+Deagle = I.GUN(10,7,100,(5,5),"Deagle","gun","tah Fortnite prime",3,None)
+Pompe = I.GUN(25,6,10,(7,5),"Spas 12","gun","Boom -200 headshot",3,None)
 # name = "Zombie" + str(len(Zombie_liste) + 1)
 # Zombie_liste.append(H.Humanoid(random.randint(0,S_WIDTH),random.randint(0,S_HEIGHT),80,80,300,"Zombie", name))
 # if pygame.Rect.collidepoint(Walls.rect(Wall1),mouse_pos[0],mouse_pos[1]) and mouse_click == (True,False,False) and not clicked:
@@ -160,7 +162,7 @@ while running:
     Human1.draw_center(screen,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
 
     if mouse_click == (True,False,False) and not clicked:
-        Human1.inventaire[0].attack()
+        Human1.attack()
         Human1.print_inventaire()
         clicked = True
     if clicked and mouse_click == (False,False,False):
@@ -168,8 +170,9 @@ while running:
     if keys[pygame.K_r]:
         Deagle.reload()
     
+    Human1.inventaire[0].draw_self(screen)
     Deagle.update()
-    Human1.do_everything(screen)
+    Human1.do_everything(screen,FONT_None,dt)
     pygame.display.flip()
     dt = clock.tick(60) / 1000
 
