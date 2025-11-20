@@ -169,7 +169,7 @@ while running:
     Human1.draw_himself_center(screen,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
 
     if mouse_click == (True,False,False) and not clicked:
-        Human1.use_hand()
+        Zombie_liste = Human1.use_hand(Zombie_liste,Human1)
         clicked = True
     if clicked and mouse_click == (False,False,False):
         clicked = False

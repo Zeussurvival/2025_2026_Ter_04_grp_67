@@ -37,19 +37,30 @@ class KNIFE(Item):
         self.time_last_throw = 0
         self.attacking = False
     
-    def use_self(self,endurance):
+    def use_self(self,endurance,zombie_list,Human):
         if endurance > 3:
-            return self.attack()
+            return self.attack(zombie_list,Human)
 
-    def attack(self):
+    def attack(self,zombie_list,Human):
         if time.time() - self.time_last_throw > self.cooldown:
             self.attacking = True
             self.time_last_throw = time.time()
             # print("Could hit")
-            return self.attacking
+            new_list = zombie_list
+            for z in range(len(zombie_list)):
+                vect = Human.pos - zombie_list[z].pos
+                if vect.length() < self.range + Human.size/2:
+                    state = zombie_list[z].take_damage(self.damage)
+                    if state == "dead":
+                        new_list.pop(z)
+                    pass
+                print(type(vect))
+                print(vect.length())
+
+            return self.attacking,zombie_list
         else:
             # print("Ya un truc mais non")
-            return False
+            return False,zombie_list
     def update(self):
         if time.time() - self.time_reload > self.cooldown and self.reloading:
             self.attacking = False
@@ -68,19 +79,19 @@ class GUN(Item):
         self.cooldown = cooldown
 
     def use_self(self,endurance):
-        if endurance > 3:
+        if endurance > 0.2:
             return self.attack()
 
-    def attack(self):
+    def attack(self,zombie_list,Human):
         if self.balle_actu > 0 and not self.reloading and time.time() - self.time_last_shoot > self.cooldown:
             self.balle_actu -= 1
             self.reloading = False
             self.time_last_shoot = time.time()
             # print("Shoot well")
-            return True
+            return True,zombie_list
         else:
             # print("Ya un truc mais non")
-            return False
+            return False,zombie_list
     def reload(self):
         self.reloading = True
         self.time_reload = time.time()
@@ -105,8 +116,8 @@ class Eatable(Item):
         self.endurance = endurance
         self.heal = heal
 
-    def use_self(self,endurance):
-        return self.eat()
+    def use_self(self,endurance,zombie_list,Human):
+        return self.eat(),zombie_list
     
     def eat(self):
         print("pas implemente")

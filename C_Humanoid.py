@@ -164,14 +164,16 @@ class Humain(Humanoid):
             self.death_mesage(screen)
 
 
-    def use_hand(self):
+    def use_hand(self,zombie_list,Human):
         if self.held_item != None:
-            response = self.held_item.use_self(self.endurance)
+            response,zombie_list = self.held_item.use_self(self.endurance,zombie_list,Human)
             if response:
                 self.endurance_last_used = time.time()
-                self.endurance -= 3
+                self.endurance -= 3 # self.held_item.endurance_used a mettre mais flm la il est 1h41
+
         else:
             print(None) 
+        return zombie_list
 
 
     def attack(self):
@@ -295,3 +297,12 @@ class Zombie(Humanoid):
         vector1 = vector.normalize() * self.speed * dt
         if vector.length() > 0.5:
             self.pos -= vector1
+
+    def take_damage(self,damage):
+        self.pv -= damage
+        if self.pv <= 0:
+            self.pv = 0
+            self.state = "dead"
+            return self.state
+        else:
+            return "alive"
