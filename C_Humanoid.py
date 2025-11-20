@@ -1,6 +1,7 @@
 import pygame
 import time
 import random
+import numpy as np
 class Humanoid():
     def __init__(self, x, y, speed, typee, name, image, size, pv):
         self.pos = pygame.math.Vector2(x,y)
@@ -34,7 +35,7 @@ class Humain(Humanoid):
         super().__init__(x, y, speed, typee, name, image, size, pv)
         self.inventaire = inventaire
         self.inv_max = inv_max
-        self.pv = 1
+        self.pv = pv
         self.endurance = 99
         self.endurance_max = endurance
         self.endurance_per_sec = 1.7
@@ -252,7 +253,7 @@ class Zombie(Humanoid):
         self.last_attack = time.time()
         # self.time_since_last_check_pos = time.time()
         # self.check_cd = 0.01
-    def search_human(self,Human_pos,dt,Human,screen):
+    def search_human(self,Human_pos,dt,Human,screen,Map_collision):
         if Human.detectable:
             vect = Human_pos - self.pos
             if vect.length() <= self.detection_range:
@@ -263,21 +264,31 @@ class Zombie(Humanoid):
                 self.pos_to_go = pygame.math.Vector2(self.pos[0]+(random.random()-0.5)*4+random.randint(1,10)*0.1, self.pos[1]+(random.random()-0.5)*4 + random.randint(1,10)*0.1)
         else:
             self.pos_to_go = pygame.math.Vector2(self.pos[0]+(random.random()-0.5)*4+random.randint(1,10)*0.1, self.pos[1]+(random.random()-0.5)*4 + random.randint(1,10)*0.1)
+        
+        if self.pos_to_go[0] < 0 + self.size/2:
+            self.pos_to_go[0] = 0 + self.size/2
+        if self.pos_to_go[0] + self.size > Map_collision.shape[0]:
+            self.pos_to_go[0] = Map_collision.shape[0] -self.size
+        if self.pos_to_go[1] < 0 + self.size/2:
+            self.pos_to_go[1] = 0 + self.size/2
+        if self.pos_to_go[1] + self.size > Map_collision.shape[1]:
+            self.pos_to_go[1] = Map_collision.shape[1] -self.size
+
     
-    def do_itself(self,Human_pos,dt,Human,screen):
+    def do_itself(self,Human_pos,dt,Human,screen,Map_collision):
         if Human.detectable:
             if self.state == "angry":
                 self.angry(Human_pos,dt,Human,screen)
             if self.state == "wander":
                 if time.time() - self.time_since_last_wander_search > self.wander_cd:
                     self.time_since_last_wander_search = time.time()
-                    self.search_human(Human_pos,dt,Human,screen,)
+                    self.search_human(Human_pos,dt,Human,screen,Map_collision)
                 self.wandering(dt)
         else:
             self.state == "wander"
             if time.time() - self.time_since_last_wander_search > self.wander_cd:
                 self.time_since_last_wander_search = time.time()
-                self.search_human(Human_pos,dt,Human,screen)
+                self.search_human(Human_pos,dt,Human,screen,Map_collision)
             self.wandering(dt)
 
     def angry(self,Human_pos,dt,Human,screen,):
