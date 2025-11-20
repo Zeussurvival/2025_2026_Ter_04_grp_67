@@ -6,73 +6,82 @@ import C_Items as I
 import C_Humanoid as H
 import C_Tiles as T
 import json
-# import random
+import random
 # import math
 pygame.init()
 pygame.font.init()
 FONT_None = pygame.font.SysFont("timesnewroman", 30)
 FONT_combat = pygame.font.SysFont("haettenschweiler", 30)
-S_WIDTH,S_HEIGHT = 1280, 720
-print(pygame.font.get_fonts())
+FONT_death = pygame.font.SysFont("timesnewroman", 80)
+S_WIDTH,S_HEIGHT = 1600, 900
+# print(pygame.font.get_fonts())
 screen = pygame.display.set_mode((S_WIDTH,S_HEIGHT))
 clock = pygame.time.Clock()
 running = True
 dt = 0
 
-GLOBAL_X_SIZE = round(S_WIDTH / 200)
-GLOBAL_Y_SIZE = round(S_WIDTH / 200)
+if S_WIDTH > S_HEIGHT:
+    coeff = S_HEIGHT
+else:
+    coeff = S_WIDTH
 
+GLOBAL_X_SIZE = round(coeff / 125)
+GLOBAL_Y_SIZE = round(coeff / 125)
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 img_dir = os.path.join(main_dir,"Image")
+Humanoid_dir = os.path.join(img_dir,"Humanoid")
 print(img_dir)
 
 class Imagee():
     def __init__(self,name):
-        self.real_img = pygame.image.load(os.path.join(img_dir, name)).convert_alpha()
-        # self.real_img = pygame.transform.scale(self.real_img,(16,16))
-        
+        self.real_img = pygame.image.load(os.path.join(Humanoid_dir, name)).convert_alpha()
         self.img = self.real_img
         self.rect = self.img.get_rect()
     def draw_self(self,pos):
         real_pos = pos[0] - self.rect[2] / 2, pos[1] - self.rect[3] / 2
         screen.blit(self.img,real_pos)
-
-
-Img_Humain = Imagee("Player.png")
-
-Couteau_depart = I.KNIFE(15, 1.5, None, "Couteau de cuisine", "Avant on l'utilisait pour couper la viande, maintenant pour couper du zombard",1,"Couteau_de_cuisine.png")
+# self, damage, range, position, name, lore, cooldown,image
+Couteau_depart = I.KNIFE(15, 1.5, 1.5, "Couteau de cuisine", "Avant on l'utilisait pour couper la viande, maintenant pour couper du zombard",1,"Couteau_de_cuisine.png")
 pomme = I.Eatable("Une pomme","récolté depuis un arbre",None,"Apple.png",15,10,10)
 Inventaire = [Couteau_depart,pomme,Couteau_depart,Couteau_depart,None,    None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,]
-Human1 = H.Humain(0,0,2,"Humain","Bob",Img_Humain.real_img,Inventaire,25,100,100)
-Zombie1 = H.Zombie(10,10,3,"Zombie","Zomb1",None,25)
+
+Img_Humain = Imagee("Player.png")
+Human1 = H.Humain(2,2,2,"Humain","Bob",Img_Humain.real_img,0.8,Inventaire,25,100,100,FONT_death)
+#           x, y, speed, typee, name, image, size, inventaire, inv_max, pv, endurance
+
+zombie_last_search = time.time()
+wander_cooldown = 1
+Img_Zombie = Imagee("Zombie.png")
+Zombie1 = H.Zombie(3,3,1,"Zombie","Zomb1",Img_Zombie.real_img,0.8,random.randint(25,50),random.randint(10,20),0.5,random.randint(3,int(GLOBAL_X_SIZE*0.75)),wander_cooldown)
 Zombie_liste = [Zombie1] 
 
-with open("Items.json","r") as f:
-    Items = json.loads(f.read())
+# with open("Items.json","r") as f:
+#     Items = json.loads(f.read())
 # print(Items)
 Deagle = I.GUN(10,7,100,(5,5),"Deagle","gun","tah Fortnite prime",3,None)
 Pompe = I.GUN(25,6,10,(7,5),"Spas 12","gun","Boom -200 headshot",3,None)
+List_objet_sol = [Deagle,Pompe]
 # name = "Zombie" + str(len(Zombie_liste) + 1)
 # Zombie_liste.append(H.Humanoid(random.randint(0,S_WIDTH),random.randint(0,S_HEIGHT),80,80,300,"Zombie", name))
 # if pygame.Rect.collidepoint(Walls.rect(Wall1),mouse_pos[0],mouse_pos[1]) and mouse_click == (True,False,False) and not clicked:
 #     clicked = True
 
 Map_tiles = np.array([[13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
-                   [13,13, 4, 7,13,13,13,13,13,13,13,13,13,13,13,13],
-                   [13,13, 0, 2,13,13,13,18,13,13,13,13,13,13,13,13],
-                   [13,13, 0, 2,13,13,13,17,13,13,13,13,13,13,13,13],
-                   [13, 4, 8, 2,13,13,13,16,13,13,13,13,13,13,13,13],
-                   [13, 0,14,11, 3, 3,13,15,13,13,13,13,13,13,13,13],
-                   [13, 0,14,14,13,12,13,13,13,13,13,13,13,13,13,13],
-                   [13, 0,14,14,13,12,13,13,13,13,13,13,13,13,13,13],
-                   [13, 0,14,14,13,13,13,13,13,13,13,13,13,13,13,13],
-                   [13, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
-                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
-                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
-                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
-                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
-                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
-                   [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13]])
+                      [13,13, 4, 7,13,13,13,13,13,13,13,13,13,13,13,13],
+                      [13,13, 0, 2,13,13,13,18,13,13,13,13,13,13,13,13],
+                      [13,13, 0, 2,13,13,13,17,13,13,13,13,13,13,13,13],
+                      [13, 4, 8, 2,13,13,13,16,13,13,13,13,13,13,13,13],
+                      [13, 0,14,11, 3, 3,13,15,13,13,13,13,13,13,13,13],
+                      [13, 0,14,14,13,12,13,13,13,13,13,13,13,13,13,13],
+                      [13, 0,14,14,13,12,13,13,13,13,13,13,13,13,13,13],
+                      [13, 0,14,14,13,13,13,13,13,13,13,13,13,13,13,13],
+                      [13, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                      [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                      [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                      [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                      [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                      [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13],
+                      [13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13]])
 
 
 Map_collision = np.zeros(Map_tiles.shape)
@@ -92,13 +101,6 @@ list_loaded_tiles = [T.Road(None,"Road_0.png",0),T.Road(None,"Road_0.png",90),T.
 #     abc = screen_size[0]/(2*16*global_sizes[0])
 #     defg = screen_size[1]/(2*16*global_sizes[0])
 #     return [(Human_pos[0]-abc,Human_pos[1]-defg),(Human_pos[0]+abc,Human_pos[1]+defg)]
-    
-# def new_chunk(matrice,pos_list):
-
-#     pos1 = verify_pos1(((pos_list[0][0]-1),pos_list[0][1]-1))
-#     pos2 = verify_pos2(((pos_list[1][0]+1),pos_list[1][1]+1))
-
-#     return matrice[plus_or_0_round(pos1[1]):plus_or_0_round(pos2[1]),plus_or_0_round(pos1[0]):plus_or_0_round(pos2[0])]
 
 # def plus_or_0_round(n):
 #     if n <= 0:
@@ -150,17 +152,21 @@ while running:
     # pos_list = tiles_in_screen(Human1.pos,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
     # chunk_shown = new_chunk(matrice=Map_tiles, pos_list=pos_list)
     # print(pos_list)
+
     for i in range(len(Map_tiles)):
         for b in range(len(Map_tiles[i])):
                 # pygame.draw.rect(screen,"green",(b*16,i*16,16,16))
                 # screen.blit(list_loaded_tiles[Map_tiles[i,b]].image,(b*16*GLOBAL_ZOOM,i*16*GLOBAL_ZOOM))
                 tuty = 2*16*GLOBAL_X_SIZE
-                list_loaded_tiles[Map_tiles[i,b]].draw_self(screen,(b-Human1.pos[0]+S_WIDTH/(16*2*GLOBAL_X_SIZE),i-Human1.pos[1]+S_HEIGHT/(16*2*GLOBAL_X_SIZE)),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
+                list_loaded_tiles[Map_tiles[i,b]].draw_self(screen,(b-Human1.pos[0]+S_WIDTH/(tuty),i-Human1.pos[1]+S_HEIGHT/(tuty)),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
+
+    for zombie in Zombie_liste:
+        zombie.draw_self(screen,Human1.pos,(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
+        zombie.do_itself(Human1.pos,dt,Human1,screen)
 
 
     Human1.moove(keys,dt,(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
-    # Human1.draw_self(screen,Human1.pos,(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
-    Human1.draw_center(screen,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
+    Human1.draw_himself_center(screen,(S_WIDTH,S_HEIGHT),(GLOBAL_X_SIZE,GLOBAL_Y_SIZE))
 
     if mouse_click == (True,False,False) and not clicked:
         Human1.use_hand()

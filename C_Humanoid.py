@@ -1,13 +1,15 @@
 import pygame
 import time
+import random
 class Humanoid():
-    def __init__(self, x, y, speed, typee, name, image,pv):
+    def __init__(self, x, y, speed, typee, name, image, size, pv):
         self.pos = pygame.math.Vector2(x,y)
         self.vect = pygame.math.Vector2(0,0)
         self.type = typee
         self.name = name
         self.speed = speed
         self.image = image
+        self.size = size
         self.pv = pv
         self.pv_max = pv
 
@@ -16,42 +18,64 @@ class Humanoid():
     def draw_center(self,screen,screen_sizes,global_sizes):
         screen.blit(pygame.transform.scale(self.image,(16*global_sizes[0]*0.8,16*global_sizes[1] *0.8)), (screen_sizes[0]/2 -8*0.8*global_sizes[0],screen_sizes[1]/2 -8*global_sizes[1]*0.8))
 
-    # def draw_self(self,screen,pos,global_sizes):
-    #     screen.blit(pygame.transform.scale(self.image,(16*global_sizes[0]*0.8,16*global_sizes[1] *0.8))  ,(pos[0]*16*global_sizes[0]- 8*global_sizes[0]*0.8,pos[1]*16*global_sizes[1]- 8*global_sizes[0]*0.8))
+    def draw_self(self,screen,Human_pos,global_sizes):
+        coeff = 16*global_sizes[0]
+        size = coeff*self.size
+        x_away_from_human = Human_pos[0] - self.pos[0]
+        y_away_from_human = Human_pos[1] - self.pos[1]
+        W,H = screen.get_size()
+        screen.blit(pygame.transform.scale(self.image,(size,size))  ,(round(W/2 - x_away_from_human*coeff- size/2,2), round( H/2 - y_away_from_human*coeff- size/2,2)))
 
 
 
 
 class Humain(Humanoid):
-    def __init__(self, x, y, speed, typee, name, image, inventaire, inv_max, pv, endurance):
-        super().__init__(x, y, speed, typee, name, image,pv)
+    def __init__(self, x, y, speed, typee, name, image, size, inventaire, inv_max, pv, endurance,font_death):
+        super().__init__(x, y, speed, typee, name, image, size, pv)
         self.inventaire = inventaire
         self.inv_max = inv_max
-        self.pv = pv - 25
+        self.pv = pv
         self.endurance = 99
         self.endurance_max = endurance
         self.endurance_per_sec = 1.7
         self.endurance_last_used = time.time()
         self.is_sprinting = False
+        self.sprint_boost = 1
         self.held_item_indice = 0
         self.held_item = self.inventaire[0]
+        self.alive = True
+        self.detectable = True
+        self.font_death = font_death
+
     def moove(self,keys,dt,global_sizes):
-        if keys[pygame.K_z]:
-            self.vect[1] -= self.speed * dt
-        if keys[pygame.K_s]:
-            self.vect[1] += self.speed * dt
-        if keys[pygame.K_q]:
-            self.vect[0] -= self.speed * dt
-        if keys[pygame.K_d]:
-            self.vect[0] += self.speed * dt
-        if self.vect.length() / (self.speed *dt + 10 **-10) > 1:
-            self.vect = self.vect.normalize() * self.speed *dt
-        self.pos += self.vect
-        if self.pos[0] - 0.4 < 0:
-            self.pos[0] = 0.4 
-        if self.pos[1] -0.4 < 0:
-            self.pos[1] = 0.4 
-        self.vect = pygame.math.Vector2(0,0)
+        if self.can_moove():
+            if keys[pygame.K_z]:
+                self.vect[1] -= self.speed * dt
+            if keys[pygame.K_s]:
+                self.vect[1] += self.speed * dt
+            if keys[pygame.K_q]:
+                self.vect[0] -= self.speed * dt
+            if keys[pygame.K_d]:
+                self.vect[0] += self.speed * dt
+            if self.vect.length() / (self.speed *dt + 10 **-10) > 1:
+                self.vect = self.vect.normalize() * self.speed *dt
+            self.pos += self.vect
+            if self.pos[0] - 0.4 < 0:
+                self.pos[0] = 0.4 
+            if self.pos[1] -0.4 < 0:
+                self.pos[1] = 0.4 
+            self.pos[0],self.pos[1] = round(self.pos[0],2),round(self.pos[1],2)
+            self.vect = pygame.math.Vector2(0,0)
+
+    def draw_himself_center(self,screen,screen_sizes,global_sizes):
+        if self.detectable:
+            self.draw_center(screen,screen_sizes,global_sizes)
+
+    def can_moove(self):
+        if self.detectable == False and self.alive == False:
+            return False
+        else:
+            return True
 
     def print_inventaire(self):
         for item in self.inventaire:
@@ -108,10 +132,10 @@ class Humain(Humanoid):
     def sprinting(self):
         if self.is_sprinting == True:
             self.is_sprinting = False
-            self.speed -= 2
+            self.speed -= self.sprint_boost
             self.endurance_last_used = time.time()
         elif self.is_sprinting == False and self.endurance > 10:
-            self.speed += 2
+            self.speed += self.sprint_boost
             self.is_sprinting = True
 
     def draw_hotbar(self,screen):
@@ -132,10 +156,12 @@ class Humain(Humanoid):
 
 
     def do_everything(self,screen,FONT_None,dt):
+        if self.detectable:
+            self.endurance_regen(dt)
         self.draw_hp_endurance(screen,FONT_None)
-        self.endurance_regen(dt)
         self.draw_hotbar(screen)
-        pass
+        if self.alive == False:
+            self.death_mesage(screen)
 
 
     def use_hand(self):
@@ -145,8 +171,8 @@ class Humain(Humanoid):
                 self.endurance_last_used = time.time()
                 self.endurance -= 3
         else:
-            print(None)
-        pass
+            print(None) 
+
 
     def attack(self):
         if self.inventaire[0].type == "gun" or "knife" and self.endurance>3:
@@ -175,7 +201,97 @@ class Humain(Humanoid):
             self.held_item = self.inventaire[4]
         pass
 
+    def death_mesage(self,screen):
+        texte = "VOUS ÊTES MORT"
+        largeur, hauteur = screen.get_size()
+        couleur_texte = (150, 0, 0)  # rouge sombre
+        text_surface = self.font_death.render(texte, True, couleur_texte)
+        text_rect = text_surface.get_rect(center=(largeur//2, hauteur//2))
+
+        # --- Rectangle semi-transparent ---
+        largeur_box = text_rect.width + 80
+        hauteur_box = text_rect.height + 40
+        box_surface = pygame.Surface((largeur_box, hauteur_box), pygame.SRCALPHA)
+
+        # Couleur : gris foncé transparent
+        box_surface.fill((30, 30, 30, 180))  # RGBA -> 180 = transparence
+
+        # Position de la box (centrée)
+        box_rect = box_surface.get_rect(center=(largeur//2, hauteur//2))
+        screen.blit(box_surface, box_rect)
+        screen.blit(text_surface, text_rect)
+
+    def take_damage(self,damage,screen):
+        self.pv -= damage
+        if self.pv <= 0:
+            self.pv = 0
+            print("Vous êtes mort")
+            self.alive = False
+            self.detectable = False
+            self.death_mesage(screen)
+
 
 class Zombie(Humanoid):
-    def __init__(self, x, y, speed, typee, name, image, pv):
-        super().__init__(x, y, speed, typee, name, image, pv)
+    def __init__(self, x, y, speed, typee, name, image, size, pv, damage, range, detection_range, wander_cooldown):
+        super().__init__(x, y, speed, typee, name, image, size, pv)
+        self.state = "wander"
+        self.damage = damage
+        self.range = range
+        self.detection_range = detection_range
+        self.time_since_last_wander_search = time.time()
+        self.wander_cd = wander_cooldown
+        self.pos_to_go = pygame.math.Vector2(x+0.1,y+0.1)
+        self.attack_cd = 1
+        self.last_attack = time.time()
+        # self.time_since_last_check_pos = time.time()
+        # self.check_cd = 0.01
+    def search_human(self,Human_pos,dt,Human,screen):
+        if Human.detectable:
+            vect = Human_pos - self.pos
+            if vect.length() <= self.detection_range:
+                self.state = "angry"
+                self.angry(Human_pos,dt,Human,screen)
+            else:
+                self.state = "wander"
+                self.pos_to_go = pygame.math.Vector2(self.pos[0]+(random.random()-0.5)*4+random.randint(1,10)*0.1, self.pos[1]+(random.random()-0.5)*4 + random.randint(1,10)*0.1)
+        else:
+            self.pos_to_go = pygame.math.Vector2(self.pos[0]+(random.random()-0.5)*4+random.randint(1,10)*0.1, self.pos[1]+(random.random()-0.5)*4 + random.randint(1,10)*0.1)
+    
+    def do_itself(self,Human_pos,dt,Human,screen):
+        if Human.detectable:
+            if self.state == "angry":
+                self.angry(Human_pos,dt,Human,screen)
+            if self.state == "wander":
+                if time.time() - self.time_since_last_wander_search > self.wander_cd:
+                    self.time_since_last_wander_search = time.time()
+                    self.search_human(Human_pos,dt,Human,screen,)
+                self.wandering(dt)
+        else:
+            self.state == "wander"
+            if time.time() - self.time_since_last_wander_search > self.wander_cd:
+                self.time_since_last_wander_search = time.time()
+                self.search_human(Human_pos,dt,Human,screen)
+            self.wandering(dt)
+
+    def angry(self,Human_pos,dt,Human,screen,):
+        vector = self.pos-Human_pos
+        if time.time() - self.last_attack > self.attack_cd:
+            if vector.length() < self.range + self.size/2:
+                self.last_attack = time.time()
+                self.attack(Human,screen,)
+            elif vector.length() > self.detection_range:
+                self.state = "wander"
+            else:
+                vector = vector.normalize() * self.speed *dt
+                if vector.length() < 0.5:
+                    self.pos -= vector # met += au lieu du -= c hillarant
+
+    def attack(self,Human,screen):
+        print(self.damage)
+        Human.take_damage(self.damage,screen)
+
+    def wandering(self,dt):
+        vector = self.pos - self.pos_to_go
+        vector1 = vector.normalize() * self.speed * dt
+        if vector.length() > 0.5:
+            self.pos -= vector1
