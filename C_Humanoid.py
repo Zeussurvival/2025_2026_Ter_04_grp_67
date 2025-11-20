@@ -34,7 +34,7 @@ class Humain(Humanoid):
         super().__init__(x, y, speed, typee, name, image, size, pv)
         self.inventaire = inventaire
         self.inv_max = inv_max
-        self.pv = pv
+        self.pv = 1
         self.endurance = 99
         self.endurance_max = endurance
         self.endurance_per_sec = 1.7
@@ -81,6 +81,11 @@ class Humain(Humanoid):
         for item in self.inventaire:
             print(item.name)
         pass
+
+    def revive(self):
+        self.alive = True
+        self.detectable = True
+        self.pv = self.pv_max
 
     def draw_hp_endurance(self,screen,FONT_None):
         pv_color = (50,255,0)

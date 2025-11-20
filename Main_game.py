@@ -13,7 +13,7 @@ pygame.font.init()
 FONT_None = pygame.font.SysFont("timesnewroman", 30)
 FONT_combat = pygame.font.SysFont("haettenschweiler", 30)
 FONT_death = pygame.font.SysFont("timesnewroman", 80)
-S_WIDTH,S_HEIGHT = 1600, 900
+S_WIDTH,S_HEIGHT = 1200, 720
 # print(pygame.font.get_fonts())
 screen = pygame.display.set_mode((S_WIDTH,S_HEIGHT))
 clock = pygame.time.Clock()
@@ -41,19 +41,22 @@ class Imagee():
         real_pos = pos[0] - self.rect[2] / 2, pos[1] - self.rect[3] / 2
         screen.blit(self.img,real_pos)
 # self, damage, range, position, name, lore, cooldown,image
-Couteau_depart = I.KNIFE(15, 1.5, 1.5, "Couteau de cuisine", "Avant on l'utilisait pour couper la viande, maintenant pour couper du zombard",1,"Couteau_de_cuisine.png")
+Couteau_depart = I.KNIFE(15, 3, 1.5, "Couteau de cuisine", "Avant on l'utilisait pour couper la viande, maintenant pour couper du zombard",1,"Couteau_de_cuisine.png")
 pomme = I.Eatable("Une pomme","récolté depuis un arbre",None,"Apple.png",15,10,10)
 Inventaire = [Couteau_depart,pomme,Couteau_depart,Couteau_depart,None,    None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,]
 
 Img_Humain = Imagee("Player.png")
-Human1 = H.Humain(2,2,2,"Humain","Bob",Img_Humain.real_img,0.8,Inventaire,25,100,100,FONT_death)
+Human1 = H.Humain(8,8,2,"Humain","Bob",Img_Humain.real_img,0.8,Inventaire,25,100,100,FONT_death)
 #           x, y, speed, typee, name, image, size, inventaire, inv_max, pv, endurance
 
 zombie_last_search = time.time()
 wander_cooldown = 1
 Img_Zombie = Imagee("Zombie.png")
-Zombie1 = H.Zombie(3,3,1,"Zombie","Zomb1",Img_Zombie.real_img,0.8,random.randint(25,50),random.randint(10,20),0.5,random.randint(3,int(GLOBAL_X_SIZE*0.75)),wander_cooldown)
+Zombie1 = H.Zombie(3,3,1+random.random(),"Zombie","Zomb1",Img_Zombie.real_img,0.8,random.randint(25,50),random.randint(10,20),0.5,random.randint(3,int(GLOBAL_X_SIZE*0.75)),wander_cooldown)
 Zombie_liste = [Zombie1] 
+for i in range(0,5):
+    Zombie_liste.append(H.Zombie(random.randint(5,10),random.randint(5,10),1+random.random(),"Zombie","Zomb"+str(i),Img_Zombie.real_img,random.random()/2 +0.5,random.randint(25,50),random.randint(10,20),0.5,random.randint(3,int(GLOBAL_X_SIZE*0.75)),wander_cooldown))
+
 
 # with open("Items.json","r") as f:
 #     Items = json.loads(f.read())
@@ -178,6 +181,9 @@ while running:
         Human1.sprinting()
     if keys[pygame.K_r]:
         Deagle.reload()
+    if keys[pygame.K_h]:
+        if Human1.alive == False:
+            Human1.revive()
     if keys[pygame.K_1] or keys[pygame.K_2] or keys[pygame.K_3] or keys[pygame.K_4] or keys[pygame.K_5]:
         Human1.change_held_item(keys)
     
