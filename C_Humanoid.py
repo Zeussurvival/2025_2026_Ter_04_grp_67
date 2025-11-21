@@ -40,6 +40,7 @@ class Humain(Humanoid):
         self.endurance_max = endurance
         self.endurance_per_sec = 1.7
         self.endurance_last_used = time.time()
+        self.mooved = False
         self.is_sprinting = False
         self.sprint_boost = 1
         self.held_item_indice = 0
@@ -48,7 +49,7 @@ class Humain(Humanoid):
         self.detectable = True
         self.font_death = font_death
 
-    def moove(self,keys,dt,global_sizes):
+    def moove(self,keys,dt):
         if self.can_moove():
             if keys[pygame.K_z]:
                 self.vect[1] -= self.speed * dt
@@ -58,14 +59,22 @@ class Humain(Humanoid):
                 self.vect[0] -= self.speed * dt
             if keys[pygame.K_d]:
                 self.vect[0] += self.speed * dt
-            if self.vect.length() / (self.speed *dt + 10 **-10) > 1:
-                self.vect = self.vect.normalize() * self.speed *dt
-            self.pos += self.vect
-            if self.pos[0] - 0.4 < 0:
-                self.pos[0] = 0.4 
-            if self.pos[1] -0.4 < 0:
-                self.pos[1] = 0.4 
-            self.pos[0],self.pos[1] = round(self.pos[0],2),round(self.pos[1],2)
+
+            if self.vect.length()!= 0: # eviter de faire des calculs pour rien ET ...
+                self.mooved = True
+                if self.vect.length() / (self.speed *dt + 10 **-10) > 1:
+                    self.vect = self.vect.normalize() * self.speed *dt
+                self.pos += self.vect
+                if self.pos[0] - 0.4 < 0:
+                    self.pos[0] = 0.4 
+                if self.pos[1] -0.4 < 0:
+                    self.pos[1] = 0.4 
+                self.pos[0],self.pos[1] = round(self.pos[0],2),round(self.pos[1],2)
+            else: # pouoir dire quil arrete de bouger et commencer sa regen dendurance
+                if self.mooved == True: 
+                    if self.endurance_last_used != time.time():
+                        self.endurance_last_used = time.time()
+                self.mooved = False
             self.vect = pygame.math.Vector2(0,0)
 
     def draw_himself_center(self,screen,screen_sizes,global_sizes):
@@ -124,14 +133,24 @@ class Humain(Humanoid):
                 if 3>diff > 1:
                     self.endurance += self.endurance_per_sec ** diff * dt * 1.1
             if self.is_sprinting:
-                if self.endurance - 5*dt >0:
-                    self.endurance -= 5*dt
+                if self.endurance - 5*dt > 0:
+                    if self.mooved == True:
+                        self.endurance -= 5*dt
+                    else:
+                        diff = time.time() - self.endurance_last_used
+                        diff = abs(diff)
+                        if diff > 3:
+                            self.endurance += 5 * dt
+                        if 3>diff > 1:
+                            self.endurance += self.endurance_per_sec ** diff * dt * 1.1
                 else:
                     self.endurance = 0
                     self.sprinting()
+            
+
         elif self.endurance >= self.endurance_max:
             if self.is_sprinting:
-                self.endurance = 99
+                self.endurance -= 5*dt
             else:
                 self.endurance = self.endurance_max
 
@@ -161,8 +180,9 @@ class Humain(Humanoid):
         pygame.draw.rect(screen,"white",(first_x+(lenght_square+width+offset)*self.held_item_indice  -2 ,y - 2,true_lenght + 4,true_lenght + 4 ),width+ 2)
 
 
-    def do_everything(self,screen,FONT_None,dt):
-        if self.detectable:
+    def do_everything(self,screen,FONT_None,dt,keys):
+        if self.detectable and self.alive == True:
+            self.moove(keys,dt)
             self.endurance_regen(dt)
         self.draw_hp_endurance(screen,FONT_None)
         self.draw_hotbar(screen)
