@@ -51,6 +51,7 @@ class KNIFE(Item):
             for z in range(len(zombie_list)):
                 if z < len(zombie_list):
                     vect = Human.pos - zombie_list[z].pos
+                    print(self.range + Human.size/2, self.range, Human.size)
                     if vect.length() < self.range + Human.size/2:
                         print(zombie_list[z].pv, "pv",zombie_list[z].name)
                         state = zombie_list[z].take_damage(self.damage)

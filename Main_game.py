@@ -41,7 +41,7 @@ class Imagee():
         real_pos = pos[0] - self.rect[2] / 2, pos[1] - self.rect[3] / 2
         screen.blit(self.img,real_pos)
 # self, damage, range, position, name, lore, cooldown,image
-Couteau_depart = I.KNIFE(15, 3, 1, "Couteau de cuisine", "Avant on l'utilisait pour couper la viande, maintenant pour couper du zombard",1,"Couteau_de_cuisine.png")
+Couteau_depart = I.KNIFE(15, 1, None, "Couteau de cuisine", "Avant on l'utilisait pour couper la viande, maintenant pour couper du zombard",1,"Couteau_de_cuisine.png")
 pomme = I.Eatable("Une pomme","récolté depuis un arbre",None,"Apple.png",15,10,10)
 Inventaire = [Couteau_depart,pomme,Couteau_depart,Couteau_depart,None,    None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,]
 
@@ -55,7 +55,7 @@ Img_Zombie = Imagee("Zombie.png")
 # x, y, speed, typee, name, image, size, pv, damage, range, detection_range, wander_cooldown):
 Zombie1 = H.Zombie(3,3,1+random.random(),"Zombie","Zomb1",Img_Zombie.real_img,0.8,random.randint(25,50),random.randint(10,20),0.5,random.randint(3,int(GLOBAL_X_SIZE*0.75)),wander_cooldown)
 Zombie_liste = [Zombie1] 
-for i in range(0,5):
+for i in range(2,7):
     Zombie_liste.append(H.Zombie(random.randint(5,10),random.randint(5,10),1+random.random(),"Zombie","Zomb"+str(i),Img_Zombie.real_img,random.random()/2 +0.5,random.randint(25,50),random.randint(10,20),0.5,random.randint(3,int(GLOBAL_X_SIZE*0.75)),wander_cooldown))
 
 
