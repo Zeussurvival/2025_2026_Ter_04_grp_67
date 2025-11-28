@@ -47,21 +47,17 @@ class KNIFE(Item):
             self.time_last_throw = time.time()
             # print("Could hit")
             new_list = zombie_list
-
             for z in range(len(zombie_list)):
                 if z < len(zombie_list):
                     vect = Human.pos - zombie_list[z].pos
-                    print(self.range + Human.size/2, self.range, Human.size)
                     if vect.length() < self.range + Human.size/2:
                         print(zombie_list[z].pv, "pv",zombie_list[z].name)
                         state = zombie_list[z].take_damage(self.damage)
                         if state == "dead":
-                            # print("es bien mort")
-                            # print(z," indice")
                             new_list.pop(z)
                     # print(vect.length(),zombie_list[z].pos)
 
-            return self.attacking,zombie_list
+            return self.attacking,new_list
         else:
             print("Ya un truc mais non")
             return False,zombie_list
